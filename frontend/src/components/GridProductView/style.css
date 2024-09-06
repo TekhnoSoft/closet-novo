@@ -1,0 +1,20 @@
+.grid-container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(1, 1fr); /* Mobile 1 coluna */
+    margin-top: 8px;
+}
+
+/* Estilos para desktop */
+@media (min-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 colunas no desktop */
+    }
+}
+
+/* Estilos para mobile 2x2 */
+@media (max-width: 767px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas no mobile */
+    }
+}

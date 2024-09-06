@@ -1,0 +1,33 @@
+.wrapper { position: relative;}
+
+.wrapper:before, .wrapper:after {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    content: "";
+    display: block;
+    width: 20px;
+    height: 100%;
+}
+
+.wrapper:before {
+    left: 0;
+}
+
+.wrapper:after {
+    right: 0;
+}
+
+.items-category {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0;
+    cursor: pointer;
+    padding: 0;
+}
+
+.items-category.active {
+    cursor: grab;
+}

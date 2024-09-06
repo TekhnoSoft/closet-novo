@@ -1,0 +1,132 @@
+.navigation-container{
+    justify-content: center;
+    display: flex;
+}
+
+.navigation{
+    position: fixed;
+    width: 400px;
+    height: 60px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    z-index: 9;
+}
+
+.navigation ul {
+    display: flex;
+    width: 350px;
+}
+
+.navigation ul li {
+    list-style: none;
+    position: relative;
+    width: 70px;
+    height: 60px;
+    z-index: 2;
+}
+
+.navigation ul li a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    line-height: 65px;
+    font-size: 1.5em;
+    transition: .5s;
+    color: #2c2c2c;
+}
+
+.navigation ul li.active a .icon {
+    transform: translateY(-32px);
+    color: #5e8975;
+}
+
+.navigation ul li a .text {
+    position: relative;
+    background-color: #5e8975;
+    color: #ffffff;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.69em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    opacity: 0;
+    transform: translateY(-15px);
+}
+
+.navigation ul li.active a .text{
+    transform: translateY(-35px);
+    opacity: 1;
+}
+
+.indicator{
+    position: absolute;
+    top: -50%;
+    height: 70px;
+    width: 70px;
+    background: #fff;
+    border-radius: 50%;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+.indicator::before{
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: -25px;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 15px 18px #fff;
+}
+
+.indicator::after{
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: -25px;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: -15px 18px #fff;
+}
+
+.navigation ul li:nth-child(1).active ~ .indicator {
+    transform: translateX(calc(70px * 0));
+}
+
+.navigation ul li:nth-child(2).active ~ .indicator {
+    transform: translateX(calc(70px * 1));
+}
+
+.navigation ul li:nth-child(3).active ~ .indicator {
+    transform: translateX(calc(70px * 2));
+}
+
+.navigation ul li:nth-child(4).active ~ .indicator {
+    transform: translateX(calc(70px * 3));
+}
+
+.navigation ul li:nth-child(5).active ~ .indicator {
+    transform: translateX(calc(70px * 4));
+}
+
+

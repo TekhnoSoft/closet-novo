@@ -1,0 +1,65 @@
+.item-category{
+    display: inline-block;
+    user-select: none;
+    color: #222;
+    font-size: 13px;
+    font-weight: bold;
+    width: 75px;
+}
+
+.item-category-desktop{
+    display: inline-block;
+    user-select: none;
+    color: #222;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80px;
+}
+
+.item-category-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px; 
+    height: 75px;
+    background-color: #fff;
+    border-radius: 50%;
+    border-radius: solid #ddd 1px;
+}
+
+.item-category-icon-desktop{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px; 
+    height: 80px;
+    background-color: #fff;
+    border-radius: 50%;
+    border-radius: solid #ddd 1px;
+}
+
+.item-category > .item-category-icon > img { 
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.item-category-desktop > .item-category-icon-desktop > img { 
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+  
+.item-category, .item-category-desktop {
+    margin-right: 15px;
+}
+  
+.item-category-b{}
+  
+@media screen and (min-width: 1200px) {
+    .wrapper {
+      margin-left: -20px;
+    }
+}
