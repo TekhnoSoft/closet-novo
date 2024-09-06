@@ -12,7 +12,7 @@ export default () => {
                     <div>
                         <img className='header-logo' src='logo.svg'/>
                         <div className='location-pin'>
-                            <ion-icon name="location-outline" size={"large"}></ion-icon>&nbsp;
+                            <ion-icon name="location-outline" style={{flex: 1}} size={"large"}></ion-icon>&nbsp;
                             <span>Planaltida-DF, Estância 3...</span>
                         </div>
                     </div>
@@ -52,7 +52,7 @@ export default () => {
                                     </li>
                                 </ul>
                             </div>
-                            <b className='text-primary-color bold cursor-pointer'>COMEÇE A VENDER</b>
+                            <b className='text-primary-color bold cursor-pointer'>COMEÇE&nbsp;A&nbsp;VENDER</b>
                         </div>
                     </Container>
                 </div>

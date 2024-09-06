@@ -82,12 +82,12 @@ export default ({ pageIndex, setPageIndex }) => {
                             <a href='javascript:void(0)'>
                                 <span className='icon'>
                                     {pageIndex == 2 ? (
-                                        <ion-icon name={`person`}></ion-icon>
+                                        <ion-icon name={`heart`}></ion-icon>
                                     ) : (
-                                        <ion-icon name={`person-outline`}></ion-icon>
+                                        <ion-icon name={`heart-outline`}></ion-icon>
                                     )}
                                 </span>
-                                <span className='text'>Perfil</span>
+                                <span className='text'>Favoritos</span>
                             </a>
                         </li>
                         <li onClick={() => { clickSaveButtonIndex(3, "/reservations") }} className={`list ${pageIndex == 3 ? 'active' : ''}`}>

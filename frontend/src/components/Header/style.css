@@ -38,7 +38,7 @@
 .menu-dropdown > ul {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: end;
 }
 
 .menu-dropdown > ul > li {
@@ -60,6 +60,6 @@
 .menu-dropdown-item{
     display: flex;
     align-items: center;
-    padding: 0 5px 0 5px;
+    padding: 0 15px 0 15px;
     cursor: pointer !important;
 }
