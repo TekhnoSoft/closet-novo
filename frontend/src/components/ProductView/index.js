@@ -18,7 +18,7 @@ export default ({index, product}) => {
                 <span className="product-name">{product.name}</span>
             </div>
             <div>
-              <span style={{fontSize: '12px'}}>Loja Qualquer: </span>
+              <span style={{fontSize: '12px'}}>Outras Lojas: </span>
               <span className="product-price-q">{Number(product.price)?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
             </div>
             <div>
