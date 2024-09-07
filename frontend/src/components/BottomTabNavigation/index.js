@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './style.css';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { MainContext } from '../../helpers/MainContext';
+import useCart from '../../hooks/CartHook';
 
 export default ({ pageIndex, setPageIndex }) => {
 
@@ -8,6 +10,8 @@ export default ({ pageIndex, setPageIndex }) => {
     const location = useLocation();
 
     const hide_in_pages = ["/terms-of-use", "/privacity-policity"];
+
+    const { cart } = useContext(MainContext);
 
     useEffect(() => {
         const list = document.querySelectorAll(".list");
@@ -102,7 +106,7 @@ export default ({ pageIndex, setPageIndex }) => {
                                 <span className='text'>Pesquisar</span>
                             </a>
                         </li>
-                        <li onClick={() => { clickSaveButtonIndex(4, "/market") }} className={`list ${pageIndex == 4 ? 'active' : ''}`}>
+                        <li onClick={() => { clickSaveButtonIndex(4, "/cart") }} className={`list ${pageIndex == 4 ? 'active' : ''}`}>
                             <a href='javascript:void(0)'>
                                 <span className='icon'>
                                     {pageIndex == 4 ? (
@@ -110,6 +114,7 @@ export default ({ pageIndex, setPageIndex }) => {
                                     ) : (
                                         <ion-icon name="bag-outline"></ion-icon>
                                     )}
+                                    {cart?.length > 0 ? (<div className='icon-badge'><div>{cart?.length}</div></div>) : (null)}
                                 </span>
                                 <span className='text'>Sacola</span>
                             </a>

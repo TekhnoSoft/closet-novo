@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './style.css';
+import { MainContext } from '../../helpers/MainContext';
 
 export default ({index, product}) => {
+
+  const { addToCart } = useContext(MainContext);
+
+  const handleClick = () => {
+    addToCart(product, 1);
+  }
+
   return (
-    <div key={index} className="product-item">
+    <div key={index} onClick={handleClick} className="product-item">
         <img src={product.image} alt={product.name} className="product-image" />
         <div className="product-info">
             <div>
