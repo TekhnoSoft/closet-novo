@@ -36,13 +36,13 @@ export default ({ pageIndex, setPageIndex }) => {
                 case '/favorites':
                     setPageIndex(2);
                     break;
-                case '/reservations':
+                case '/search':
                     setPageIndex(3);
                     break;
-                case '/market':
+                case '/cart':
                     setPageIndex(4);
                     break;
-                case '/profile':
+                case '/menu':
                     setPageIndex(5);
                     break;
                 default:
@@ -94,7 +94,7 @@ export default ({ pageIndex, setPageIndex }) => {
                                 <span className='text'>Favoritos</span>
                             </a>
                         </li>
-                        <li onClick={() => { clickSaveButtonIndex(3, "/reservations") }} className={`list ${pageIndex == 3 ? 'active' : ''}`}>
+                        <li onClick={() => { clickSaveButtonIndex(3, "/search") }} className={`list ${pageIndex == 3 ? 'active' : ''}`}>
                             <a href='javascript:void(0)'>
                                 <span className='icon'>
                                     {pageIndex == 3 ? (
@@ -119,7 +119,7 @@ export default ({ pageIndex, setPageIndex }) => {
                                 <span className='text'>Sacola</span>
                             </a>
                         </li>
-                        <li onClick={() => { clickSaveButtonIndex(5, "/profile") }} className={`list ${pageIndex == 5 ? 'active' : ''}`}>
+                        <li onClick={() => { clickSaveButtonIndex(5, "/menu") }} className={`list ${pageIndex == 5 ? 'active' : ''}`}>
                             <a href='javascript:void(0)'>
                                 <span className='icon'>
                                     {pageIndex == 5 ? (

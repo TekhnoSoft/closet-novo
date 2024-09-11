@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { MainContext } from "./helpers/MainContext";
-import { Cart, Home } from "./pages";
+import { Cart, Home, Search } from "./pages";
 import { BottomTabNavigation, Header } from "./components";
 import { useState } from "react";
 import Utils from "./Utils";
@@ -20,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
         {Utils.mobileCheck() ? (
           <>

@@ -11,3 +11,5 @@ export { default as Button } from './Button';
 export { default as CarouselView } from './CarouselView';
 export { default as GridCardView } from './GridCardView';
 export { default as ProductView } from './ProductView';
+export { default as FlatButton } from './FlatButton';
+export { default as Input } from './Input';
