@@ -17,7 +17,7 @@ const FilterComponent = ({ selectSituacao, setSelectSituacao, selectOrder, setSe
             height: Utils?.mobileCheck() ? undefined : '100%', 
             overflowY: Utils?.mobileCheck() ? undefined : 'auto' 
             }}>
-            <div style={{overflow: Utils.mobileCheck() ? 'auto' : undefined, height: Utils.mobileCheck() ? 'calc(100vh - 130px)' : 'calc(100vh - 120px)'}}>
+            <div style={{overflow: Utils.mobileCheck() ? 'auto' : undefined, height: Utils.mobileCheck() ? 'calc(100vh - 150px)' : 'calc(100vh - 120px)'}}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <ion-icon name="funnel-outline" style={{ fontSize: "1rem" }}></ion-icon>&nbsp;
                     <span style={{ fontSize: "1rem" }}>Filtros</span>

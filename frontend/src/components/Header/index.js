@@ -36,7 +36,7 @@ export default () => {
 
     const handleSubmit = (e) => {
         e?.preventDefault(); 
-        localStorage.setItem("search_text", search);
+        localStorage.setItem("search_text", search || "");
         setSearchModal(false);
         setSearch(null);
         navigate(`/search`);
