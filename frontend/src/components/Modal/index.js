@@ -3,7 +3,7 @@ import './style.css';
 import { useNavigate } from 'react-router-dom';
 import Utils from '../../Utils';
 
-const Modal = ({ children, show, setShow, onCloseCallback }) => {
+const Modal = ({ children, show, setShow, onCloseCallback, style, noPadding }) => {
 
     const navigate = useNavigate();
 
@@ -47,8 +47,8 @@ const Modal = ({ children, show, setShow, onCloseCallback }) => {
 
     return (
         show ? (
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999999, background: 'rgba(0, 0, 0, 0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={handleBackdropClick}>
-                <div style={{ background: '#fff', padding: '20px', borderRadius: '5px', width: Utils.mobileCheck() ? '90%' : '40%'}} onClick={handleContentClick}>
+            <div style={{...style, position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999999, background: 'rgba(0, 0, 0, 0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={handleBackdropClick}>
+                <div style={{ background: '#fff', padding: noPadding ? '0px' : '20px', borderRadius: '5px', width: Utils.mobileCheck() ? '90%' : '40%'}} onClick={handleContentClick}>
                     {children}
                 </div>
             </div>

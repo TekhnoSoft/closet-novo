@@ -13,3 +13,7 @@ export { default as GridCardView } from './GridCardView';
 export { default as ProductView } from './ProductView';
 export { default as FlatButton } from './FlatButton';
 export { default as Input } from './Input';
+export { default as Select } from './Select';
+export { default as Option } from './Option';
+export { default as InputRange } from './InputRange';
+export { default as Checkbox } from './Checkbox';

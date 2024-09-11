@@ -43,6 +43,11 @@
         border: 0;
         margin: 0;
         padding: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none; /* Para navegadores baseados em WebKit */
+        -moz-user-select: none; /* Para navegadores baseados em Gecko */
+        -ms-user-select: none; /* Para navegadores baseados em Trident */
+        user-select: none; /* Padrão */
       }
       .text-primary-color{
         color: #5e8975;
@@ -64,6 +69,29 @@
       .mb-4{margin-bottom: 40px;}
       .mb-5{margin-bottom: 50px;}
       .cursor-pointer{cursor: pointer;}
+      /* scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 255, 255, 0.3);
+}
+
     </style>
 
   </head>

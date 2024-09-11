@@ -1,0 +1,35 @@
+  #range-slider-closet .range-slider__range {
+      background: #5e8975;
+      transition: height 0.3s;
+  }
+
+  #range-slider-closet .range-slider__thumb {
+      background: #5e8975;
+      transition: transform 0.3s;
+  }
+
+  #range-slider-closet .range-slider__thumb[data-active] {
+      transform: translate(-50%, -50%) scale(1.25);
+  }
+
+  #range-slider-closet .range-slider__range[data-active] {
+      height: 16px;
+  }
+
+  .input-box-range{
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 4px;
+    color: #202124;
+    border: 1px solid #dadce0;
+    padding: 13px 15px;
+    transition: 250ms;
+  }
+
+  .input-label-range{
+    color: #80868b;
+    position: relative;
+    background: #fff;
+    font-size: 11px;
+    transition: 250ms;
+  }
