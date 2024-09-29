@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import './style.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MainContext } from '../../helpers/MainContext';
-import useCart from '../../hooks/CartHook';
 
 export default ({ pageIndex, setPageIndex }) => {
 

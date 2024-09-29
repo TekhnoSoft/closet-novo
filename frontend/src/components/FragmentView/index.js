@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '../Container';
 import Footer from '../Footer';
 import SpaceBox from '../SpaceBox';
@@ -13,6 +13,11 @@ const FragmentViewContent = ({children}) => (
 )
 
 export default ({children, noPaddingContainer}) => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
     return (
         <>
             {noPaddingContainer ? (

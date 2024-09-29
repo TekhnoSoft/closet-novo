@@ -17,3 +17,4 @@ export { default as Select } from './Select';
 export { default as Option } from './Option';
 export { default as InputRange } from './InputRange';
 export { default as Checkbox } from './Checkbox';
+export { default as If } from './If';

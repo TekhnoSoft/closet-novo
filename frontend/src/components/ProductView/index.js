@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import './style.css';
 import { MainContext } from '../../helpers/MainContext';
+import { useNavigate } from 'react-router-dom';
 
 export default ({index, product}) => {
 
-  const { addToCart } = useContext(MainContext);
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    addToCart(product, 1);
+    navigate(`/product/${product?.id_product}`);
   }
 
   return (

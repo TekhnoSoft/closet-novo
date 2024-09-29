@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import './style.css';
-import { FragmentView } from '../../components';
+import { FragmentView, If } from '../../components';
 import { MainContext } from '../../helpers/MainContext';
 
 export default () => {

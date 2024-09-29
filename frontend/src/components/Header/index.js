@@ -47,7 +47,7 @@ export default () => {
             <>
                 <div className='header-mobile'>
                     <div>
-                        <img className='header-logo' src='logo.svg'/>
+                        <img className='header-logo' src='../logo.svg'/>
                         <div className='location-pin'>
                             <div style={{width: '25px', display: 'flex', alignItems: 'center'}}>
                                 <ion-icon name="location-outline" size={"large"}></ion-icon>
@@ -72,7 +72,7 @@ export default () => {
                 <div className='header'>
                     <Container>
                         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <img onClick={handleHome} className='header-logo' src='logo.svg'/>
+                            <img onClick={handleHome} className='header-logo' src={'../logo.svg'}/>
                             <div className='menu-dropdown'>
                                 <ul>
                                     <li className='menu-dropdown-item'>
