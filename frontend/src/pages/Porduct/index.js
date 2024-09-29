@@ -123,17 +123,23 @@ export default () => {
                                 <div className="product-rating">
                                     <span className="review">Ref: <b>#8128932</b></span>
                                 </div>
+                                <div className="product-rating">
+                                    <span className="review">Categoria: <b>Bolsas</b></span>
+                                </div>
+                                <div className="product-rating">
+                                    <span className="review">Situação: <b>Novo</b></span>
+                                </div>
                                 <div className="product-price">
                                     <span className="offer-price">R$ 99,00</span>
                                     <span className="sale-price">R$ 129,00</span>
                                 </div>
 
                                 <div className="product-details">
-                                    <h3>Description</h3>
+                                    <h3>Descrição</h3>
                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos est magnam quibusdam maiores sit perferendis minima cupiditate iusto earum repudiandae maxime vitae nostrum, ea cumque iste ipsa hic commodi tempore.</p>
                                 </div>
                                 <div className="product-size">
-                                    <h4>Size</h4>
+                                    <h4>Tamanho</h4>
                                     <div className="size-layout">
                                         <input type="radio" name="size" value="S" id="1" className="size-input" />
                                         <label for="1" className="size">S</label>
@@ -152,7 +158,7 @@ export default () => {
                                     </div>
                                 </div>
                                 <div className="product-color">
-                                    <h4>Color</h4>
+                                    <h4>Cor</h4>
                                     <div className="color-layout">
                                         <input type="radio" name="color" value="black" className="color-input" />
                                         <label for="black" className="black"></label>
