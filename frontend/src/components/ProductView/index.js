@@ -8,6 +8,7 @@ export default ({index, product}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
+    window.scrollTo(0, 0);
     navigate(`/product/${product?.id_product}`);
   }
 
@@ -24,7 +25,7 @@ export default ({index, product}) => {
             </div>
             <div>
                 <span style={{fontSize: '12px'}}>Closet Novo: </span>
-                <span className="product-price">{Number(product.price)?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                <span className="product-price" style={{justifyContent: 'center'}}>{Number(product.price)?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
             </div>
         </div>
     </div>
