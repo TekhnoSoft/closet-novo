@@ -16,11 +16,13 @@
     padding: 10px 0px;
     background-color: #fff;
     z-index: 9999;
+    display: flex;
 }
 
 .header-mobile > div {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     align-items: center;
     padding-left: 10px;
     padding-right: 10px;

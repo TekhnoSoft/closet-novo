@@ -5,11 +5,11 @@ import { MainContext } from '../../helpers/MainContext';
 
 export default () => {
 
-    const { cart, getCartPrice } = useContext(MainContext);
+    const { cart } = useContext(MainContext);
 
     useEffect(() => {
         console.log(cart);
-        console.log(getCartPrice())
+        console.log(cart.getCartPrice())
     }, [])
 
     return (

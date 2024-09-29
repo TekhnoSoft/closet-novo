@@ -97,7 +97,7 @@ export default () => {
             <div class="container">
                 <div className="single-product">
                     <div className="row">
-                        <div className="col-6 product-images" style={{ height: Utils.mobileCheck() ? 'calc(100vh - 260px)' : undefined }}>
+                        <div className="col-6 product-images" style={{ height: Utils.mobileCheck() ? 'calc(100vh - 300px)' : undefined }}>
                             <div className="product-image">
                                 <div className="product-image-main">
                                     <img src="https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png" alt="" id="product-main-image" />

@@ -8,14 +8,15 @@ import useCart from "./hooks/CartHook";
 
 function App() {
 
+  const [user, setUser] = useState(false);
+
   const [pageIndex, setPageIndex] = useState(Number(localStorage.getItem("closetnovo_bottomtab_index") || 1));
-  const [pageIndexDesktop, setPageIndexDesktop] = useState(Number(localStorage.getItem("closetnovo_bottomtab_index_desktop")) || 1);
 
   const cart = useCart();
 
   return (
     <Router>
-      <MainContext.Provider value={cart}>
+      <MainContext.Provider value={{cart, user}}>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

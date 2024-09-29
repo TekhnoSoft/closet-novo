@@ -13,7 +13,7 @@ export default () => {
 
     const navigate = useNavigate();
 
-    const { cart } = useContext(MainContext);
+    const { user, cart } = useContext(MainContext);
 
     const [searchModal, setSearchModal] = useState(false);
     const [search, setSearch] = useState(null);
@@ -49,10 +49,21 @@ export default () => {
                     <div>
                         <img className='header-logo' src='../logo.svg'/>
                         <div className='location-pin'>
-                            <div style={{width: '25px', display: 'flex', alignItems: 'center'}}>
-                                <ion-icon name="location-outline" size={"large"}></ion-icon>
-                            </div>&nbsp;
-                            <span>Planaltida-DF, Estância 3...</span>
+                            {user ? (
+                                <>
+                                    <div style={{width: '25px', display: 'flex', alignItems: 'center'}}>
+                                        <ion-icon name="location-outline" size={"large"}></ion-icon>
+                                    </div>&nbsp;
+                                    <span>Planaltida-DF, Estância 3...</span>
+                                </>
+                            ) : (
+                                <div style={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <div style={{width: '25px', display: 'flex', alignItems: 'center'}}>
+                                        <ion-icon name="person-outline" style={{fontSize: '14pt', color: '#5e8975'}}></ion-icon>
+                                    </div>&nbsp;
+                                    <span>Login / Registre-se</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
