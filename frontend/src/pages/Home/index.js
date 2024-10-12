@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { CarouselView, Container, FragmentView, GridCardView } from '../../components';
+import { CarouselView, Container, FragmentView, GridCardView, SpaceBox } from '../../components';
 import GridProductView from '../../components/GridProductView';
 import CategoryList from '../../components/CategoryList';
 import { MainContext } from '../../helpers/MainContext';
@@ -256,19 +256,25 @@ export default () => {
     return (
         <FragmentView noPaddingContainer>
             <CarouselView items={itemsCarousel}/>
+            <SpaceBox space={10}/>
             <Container center>
                 <CategoryList categories={categories}/>
             </Container>
+            <SpaceBox space={10}/>
             <Container center>
                 <GridProductView icon={<ion-icon style={{color: 'gray'}} name="pricetag-outline" />} title={"Bolsas em destaque"} products={products} />
             </Container>
+            <SpaceBox space={10}/>
             <Container>
                 <GridCardView items={itemsCardView}/>
             </Container>
+            <SpaceBox space={10}/>
             <CarouselView items={itemsCarousel2}/>
+            <SpaceBox space={20}/>
             <Container center>
                 <GridProductView icon={<ion-icon style={{color: 'gray'}} name="footsteps-outline" />} title={"Sapatos de luxo"} products={productsSapatos} />
             </Container>
+            <SpaceBox space={10}/>
         </FragmentView>
     )
 }

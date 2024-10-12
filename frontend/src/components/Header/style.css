@@ -65,3 +65,11 @@
     padding: 0 15px 0 15px;
     cursor: pointer !important;
 }
+
+.dropdown-content{
+    width: 400px;
+    background: #fff;
+    padding: 8px;
+    position: absolute;
+    top: 50px;
+}

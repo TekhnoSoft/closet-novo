@@ -48,7 +48,7 @@ const Modal = ({ children, show, setShow, onCloseCallback, style, noPadding }) =
     return (
         show ? (
             <div style={{...style, position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999999, background: 'rgba(0, 0, 0, 0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={handleBackdropClick}>
-                <div style={{ background: '#fff', padding: noPadding ? '0px' : '20px', borderRadius: '5px', width: Utils.mobileCheck() ? '90%' : '40%'}} onClick={handleContentClick}>
+                <div style={{ background: '#fff', margin: Utils.mobileCheck() ? '8px' : undefined, padding: noPadding ? '0px' : '20px', borderRadius: '5px', width: Utils.mobileCheck() ? '90%' : '600px'}} onClick={handleContentClick}>
                     {children}
                 </div>
             </div>
