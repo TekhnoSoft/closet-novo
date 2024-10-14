@@ -1,0 +1,78 @@
+.menu {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.menu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-unique-title{
+    display: start;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Submenu inicialmente escondido com height */
+.submenu-list {
+    list-style: none;
+    margin: 0 10px 10px 10px;
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Exibir submenu quando a classe 'show' é aplicada */
+.submenu-list.show {
+    height: auto;
+    opacity: 1;
+    transform: translateY(0);
+    overflow: hidden;
+}
+
+/* Estilo dos itens do submenu */
+.submenu-item {
+    padding: 5px 5px 5px 5px;
+    font-size: 14px;
+    color: #555;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efeito hover nos itens do submenu */
+.submenu-item:hover {
+    background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
+    color: #333; /* Cor do texto ao passar o mouse */
+}
+
+.menu-unique-item{
+    transition: 0.3s ease;
+}
+
+.menu-unique-item:hover{
+    background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
+    color: #333; /* Cor do texto ao passar o mouse */
+    transition: 0.3s ease;
+}
+
+/* Animação para o ícone de chevron */
+.rotate {
+    transition: transform 0.3s ease;
+    transform: rotate(180deg);
+}

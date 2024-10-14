@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { MainContext } from "./helpers/MainContext";
-import { Cart, Home, Porduct, Search } from "./pages";
+import { Cart, Home, Porduct, Search, Menu } from "./pages";
 import { BottomTabNavigation, Header } from "./components";
 import { useState } from "react";
 import Utils from "./Utils";
@@ -8,7 +8,7 @@ import useCart from "./hooks/CartHook";
 
 function App() {
 
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
 
   const [pageIndex, setPageIndex] = useState(Number(localStorage.getItem("closetnovo_bottomtab_index") || 1));
 
@@ -22,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/menu" element={<Menu />} />
           <Route path="/product/:id" element={<Porduct />} />
         </Routes>
         {Utils.mobileCheck() ? (

@@ -21,7 +21,84 @@ export default () => {
     const [searchModal, setSearchModal] = useState(false);
     const [search, setSearch] = useState(null);
 
-    const menuItems = ["Marcas", "Bolsas", "Roupas", "Acessorios", "Sapados"];
+    const menuItems = [
+        { 
+            name: "Marcas", 
+            subItems: [
+                "Adidas", 
+                "Nike", 
+                "Puma", 
+                "Reebok", 
+                "Under Armour", 
+                "New Balance", 
+                "Asics", 
+                "Vans", 
+                "Converse", 
+                "Fila"
+            ] 
+        },
+        { 
+            name: "Bolsas", 
+            subItems: [
+                "Bolsa Tote", 
+                "Bolsa Crossbody", 
+                "Bolsa de Ombro", 
+                "Bolsa Clutch", 
+                "Bolsa Backpack", 
+                "Bolsa de Coração", 
+                "Bolsa de Praia", 
+                "Bolsa de Viagem", 
+                "Bolsa de Lona", 
+                "Bolsa de Couro"
+            ] 
+        },
+        { 
+            name: "Roupas", 
+            subItems: [
+                "Camiseta", 
+                "Calça Jeans", 
+                "Jaqueta", 
+                "Vestido", 
+                "Shorts", 
+                "Saia", 
+                "Camisa", 
+                "Moletom", 
+                "Blusa", 
+                "Roupa de Banho"
+            ] 
+        },
+        { 
+            name: "Acessórios", 
+            subItems: [
+                "Cinto", 
+                "Relógio", 
+                "Óculos de Sol", 
+                "Bijuterias", 
+                "Chapéu", 
+                "Cachecol", 
+                "Luvas", 
+                "Meia", 
+                "Pulseira", 
+                "Brinco"
+            ] 
+        },
+        { 
+            name: "Sapatos", 
+            subItems: [
+                "Tênis", 
+                "Bota", 
+                "Sandalha", 
+                "Sapato Social", 
+                "Chinelo", 
+                "Botinha", 
+                "Oxford", 
+                "Mocassim", 
+                "Sapato de Festa", 
+                "Tênis de Corrida"
+            ] 
+        }
+    ];
+
     const [hoveredItem, setHoveredItem] = useState(null);
 
     const handleSearch = () => {
@@ -105,11 +182,13 @@ export default () => {
                                             onMouseEnter={() => setHoveredItem(index)}
                                             onMouseLeave={() => setHoveredItem(null)}
                                         >
-                                            <span>{item}</span>&nbsp;
+                                            <span>{item.name}</span>&nbsp;
                                             <ion-icon name="chevron-down-outline"></ion-icon>
                                             {hoveredItem === index && (
                                                 <div className="dropdown-content">
-                                                   eae  {item}
+                                                    {item.subItems.map((subItem, subIndex) => (
+                                                        <div key={subIndex}>{subItem}</div>
+                                                    ))}
                                                 </div>
                                             )}
                                         </li>
