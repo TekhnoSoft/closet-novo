@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, CarouselView, FragmentView, If, SpaceBox } from '../../components';
+import { Button, FragmentView, If, SpaceBox } from '../../components';
 import './style.css';
 import Utils from '../../Utils';
 import GridProductView from '../../components/GridProductView';
@@ -17,7 +17,7 @@ const startupLogics = () => {
 
 export default () => {
 
-    const { addToCart } = useContext(MainContext);
+    const { cart } = useContext(MainContext);
 
     const [images, setImages] = useState([
         { image: 'https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg' },
@@ -88,7 +88,7 @@ export default () => {
     }, [])
 
     const handleAddToCart = () => {
-        addToCart(products[0], 1);
+        cart.addToCart(products[0], 1);
     }
 
     return (

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './style.css';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { MainContext } from '../../helpers/MainContext';
 
 export default ({ pageIndex, setPageIndex }) => {
@@ -113,7 +113,7 @@ export default ({ pageIndex, setPageIndex }) => {
                                     ) : (
                                         <ion-icon name="bag-outline"></ion-icon>
                                     )}
-                                    {cart?.length > 0 ? (<div className='icon-badge'><div>{cart?.length}</div></div>) : (null)}
+                                    {cart?.cart?.length > 0 ? (<div className='icon-badge'><div>{cart?.cart?.length}</div></div>) : (null)}
                                 </span>
                                 <span className='text'>Sacola</span>
                             </a>

@@ -206,7 +206,7 @@ export default () => {
                                 </div>&nbsp;&nbsp;&nbsp;
                                 <div onClick={handleCart} style={{ cursor: 'pointer' }}>
                                     <ion-icon style={{ fontSize: '16pt' }} name="bag-outline"></ion-icon>
-                                    {cart?.length > 0 ? (<div className='icon-badge'><div>{cart?.length}</div></div>) : (null)}
+                                    {cart?.cart?.length > 0 ? (<div className='icon-badge'><div>{cart?.cart?.length}</div></div>) : (null)}
                                 </div>
                             </div>
                         </div>

@@ -8,7 +8,7 @@ import useCart from "./hooks/CartHook";
 
 function App() {
 
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
   const [pageIndex, setPageIndex] = useState(Number(localStorage.getItem("closetnovo_bottomtab_index") || 1));
 
