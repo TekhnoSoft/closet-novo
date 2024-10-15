@@ -135,7 +135,7 @@ export default () => {
                 <AccountModal show={showAccountModal} setShow={setShowAccountModal} />
                 <div className='header-mobile'>
                     <div>
-                        <img onClick={handleHome} className='header-logo' src='../logo.svg' />
+                        <img onClick={handleHome} className='header-logo' src='../logo.svg' style={{width: '120px'}} />
                         <div className='location-pin'>
                             {user ? (
                                 <>
