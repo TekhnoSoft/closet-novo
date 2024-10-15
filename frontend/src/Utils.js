@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 class Utils {
     static mobileCheck() {
         let check = false;
@@ -26,6 +27,9 @@ class Utils {
     }
     static formatBRL(number) {
         return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+    static toast({ text }) {
+        toast.success(text);
     }
 }
 

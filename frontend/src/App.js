@@ -5,6 +5,8 @@ import { BottomTabNavigation, Header } from "./components";
 import { useState } from "react";
 import Utils from "./Utils";
 import useCart from "./hooks/CartHook";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
@@ -16,15 +18,16 @@ function App() {
 
   return (
     <Router>
-      <MainContext.Provider value={{cart, user}}>
+      <MainContext.Provider value={{ cart, user }}>
         <Header />
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/search" element={<Search />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/product/:id" element={<Product />} />
-          <Route path="/favorites" element={<Favorite/>} />
+          <Route path="/favorites" element={<Favorite />} />
         </Routes>
         {Utils.mobileCheck() ? (
           <>
