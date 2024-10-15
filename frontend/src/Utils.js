@@ -28,8 +28,18 @@ class Utils {
     static formatBRL(number) {
         return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
-    static toast({ text }) {
-        toast.success(text);
+    static toast({ text, type }) {
+        switch (type) {
+            case "success":
+                toast.success(text);
+                break;
+            case "error":
+                toast.error(text);
+                break;
+            case "info":
+                toast.info(text);
+                break;
+        }
     }
 }
 

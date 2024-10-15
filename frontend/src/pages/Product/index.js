@@ -116,6 +116,7 @@ export default () => {
   const handleAddToCart = () => {
     cart.addToCart(products[2], 1);
     Utils.toast({
+      type: "success",
       text: "Produto adicionado!"
     })
   }
