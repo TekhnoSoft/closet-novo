@@ -5,9 +5,9 @@ import './style.css';
 import Utils from '../../Utils';
 import ProductView from '../ProductView';
 
-export default ({icon, title, products, transparency, noAction}) => {
+export default ({icon, title, products, transparency, noAction, noPadding}) => {
     return (
-        <Card style={{background: transparency ? 'transparent' : undefined, boxShadow: transparency ? 'none' : undefined}} className={`${Utils.mobileCheck() ? 'mb-1' : 'mb-5'}`}>
+        <Card style={{background: transparency ? 'transparent' : undefined, boxShadow: transparency ? 'none' : undefined, padding: noPadding ? '0px' : '5px'}} className={`${Utils.mobileCheck() ? 'mb-1' : 'mb-5'}`}>
             <div style={{display: 'flex', alignItems: 'center', height: '50px', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     {icon}&nbsp;

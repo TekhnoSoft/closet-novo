@@ -181,7 +181,7 @@ export default () => {
 
     return (
         <FragmentView noPaddingContainer>
-            <Modal noPadding show={modalFilter} setShow={setModalFilter} onCloseCallback={onCloseCallbackModalFilter}>
+            <Modal childrenPadding={"0px"} show={modalFilter} setShow={setModalFilter} onCloseCallback={onCloseCallbackModalFilter}>
                 <FilterComponent
                     selectSituacao={selectSituacao}
                     setSelectSituacao={setSelectSituacao}

@@ -34,7 +34,7 @@ const ConstData = {
       ],
       ref: "#8128932",
       category: "Bolsas",
-      condition: "Novo",
+      condition: "Usado",
       offerPrice: 9900,
       salePrice: 12900,
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
@@ -86,7 +86,7 @@ const ConstData = {
       ],
       ref: "#8128932",
       category: "Bolsas",
-      condition: "Novo",
+      condition: "Usado",
       offerPrice: 9900,
       salePrice: 12900,
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
@@ -137,7 +137,7 @@ const ConstData = {
       ],
       ref: "#8128932",
       category: "Bolsas",
-      condition: "Novo",
+      condition: "Usado",
       offerPrice: 9900,
       salePrice: 12900,
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."

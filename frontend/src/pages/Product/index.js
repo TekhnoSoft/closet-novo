@@ -67,8 +67,8 @@ const ProductInfo = ({ product, handleAddToCart }) => (
     <div className="product-rating"><span className="review">Situação: <b>{product.condition}</b></span></div>
 
     <div className="product-price">
-      <span className="offer-price">R$ {product.offerPrice}</span>
-      <span className="sale-price">R$ {product.salePrice}</span>
+      <span className="offer-price">{Utils.formatBRL(product.offerPrice)}</span>
+      <span className="sale-price">{Utils.formatBRL(product.salePrice)}</span>
     </div>
 
     <div className="product-details">
@@ -97,7 +97,7 @@ const ProductView = ({ user, product, products, handleAddToCart }) => {
           </div>
         </div>
         <SpaceBox space={15} />
-        <GridProductView transparency noAction title="Recomendados pra você!" icon={null} products={products} />
+        <GridProductView transparency noAction noPadding title="Recomendados pra você!" icon={null} products={products} />
       </div>
     </div>
   );

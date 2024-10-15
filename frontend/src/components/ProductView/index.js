@@ -27,7 +27,8 @@ export default ({index, product}) => {
     <>
       <AccountModal show={showAccountModal} setShow={setShowAccountModal} />
       <div key={index} className="product-item">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end', textAlign: 'right', width: '100%'}}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', textAlign: 'right', width: '100%'}}>
+            <span style={{background: '#5e8975', color: 'white', fontWeight: 'bold', padding: '0 5px 0 5px', borderRadius: '6px 0 6px 0'}}>{product?.condition?.toLowerCase()}</span>
             <ion-icon onClick={handleFavorite} name="heart-outline" style={{cursor: 'pointer', color: '#5e8975', fontSize: '16pt'}}></ion-icon>
           </div>
           <img onClick={handleClick} src={product.images[0]} alt={product.name} className="product-image" />
