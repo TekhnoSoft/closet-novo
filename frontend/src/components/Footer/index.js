@@ -60,9 +60,9 @@ export default () => {
             </div>
 
             <div className='footer-bottom'>
-                <p>&copy; 2024 Closet Novo. Todos os direitos reservados.</p>
+                <p>&copy; {new Date().getFullYear()} Closet Novo. Todos os direitos reservados.</p>
             </div>
-            {Utils.mobileCheck() ? (<SpaceBox space={70} />) : (null)}
+            {Utils.mobileCheck() ? (<SpaceBox space={80} />) : (null)}
         </footer>
     );
 }
