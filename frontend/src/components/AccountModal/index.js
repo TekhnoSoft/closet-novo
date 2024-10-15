@@ -6,11 +6,21 @@ import Button from '../Button';
 import Input from '../Input';
 import './style.css';
 import Utils from '../../Utils';
+import { useNavigate } from 'react-router-dom';
 
 export default ({ show, setShow }) => {
+    
+    const navigate = useNavigate();
+    
     const { user } = useContext(MainContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleRegister = () => {
+        setShow(false);
+        navigate("/register");
+    }
 
     return (
         <If condition={user == null || !user} elseComponent={null}>
@@ -53,7 +63,7 @@ export default ({ show, setShow }) => {
                         </Button>
                     </div>
                     <p className="create-account">
-                        Não tem uma conta? <b>Registre-se.</b>
+                        Não tem uma conta? <b onClick={handleRegister}>Registre-se.</b>
                     </p>
                 </div>
             </Modal>
