@@ -14,7 +14,7 @@ export default ({index, product}) => {
 
   return (
     <div key={index} onClick={handleClick} className="product-item">
-        <img src={product.image} alt={product.name} className="product-image" />
+        <img src={product.images[0]} alt={product.name} className="product-image" />
         <div className="product-info">
             <div>
                 <span className="product-name">{product.name}</span>
