@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Container, FragmentView, If, SpaceBox } from '../../components';
+import { Button, FragmentView, If, SpaceBox } from '../../components';
 import './style.css';
 import Utils from '../../Utils';
 import GridProductView from '../../components/GridProductView';
@@ -106,7 +106,7 @@ export default () => {
     return (
         <FragmentView>
             <SpaceBox space={Utils.mobileCheck() ? 0 : 25} />
-            <ProductView product={products[1]} products={products} handleAddToCart={handleAddToCart} />
+            <ProductView product={products[0]} products={products} handleAddToCart={handleAddToCart} />
         </FragmentView>
     )
 }
