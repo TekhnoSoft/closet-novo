@@ -16,7 +16,7 @@ export default ({ show, setShow }) => {
         <If condition={user == null || !user} elseComponent={null}>
             <Modal childrenPadding={Utils.mobileCheck() ? "10px" : "20px"} show={show} setShow={setShow}>
                 <div className="login-container">
-                    <div style={{display: 'flex', alignItems: 'center', justifyContent: Utils.mobileCheck() ? 'start' : 'center', width: '100%'}}>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: Utils.mobileCheck() ? 'start' : 'start', width: '100%'}}>
                         <img width={Utils.mobileCheck() ? 150 : 200} src='../hero3.png'/>
                         <div style={{}}>
                             <h2 className="login-title">Login</h2>
@@ -53,7 +53,7 @@ export default ({ show, setShow }) => {
                         </Button>
                     </div>
                     <p className="create-account">
-                        Não tem uma conta? <b>Crie uma.</b>
+                        Não tem uma conta? <b>Registre-se.</b>
                     </p>
                 </div>
             </Modal>
