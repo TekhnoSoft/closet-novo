@@ -200,7 +200,7 @@ export default () => {
             ) : (null)}
             <Container center className={'mt-2'}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <div style={{ background: "#fff", border: 'solid 1px #ddd', borderRadius: '16px', padding: '8px', width: '100%', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ background: "#fff", border: 'solid 1px #ddd', borderRadius: '8px', padding: '8px', width: '100%', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ overflow: 'hidden', flex: '0.99' }}>
                             <input ref={inputRef} type='text' placeholder='Pesquisar produto...' style={{ width: '100%', height: '40px', border: 'none', fontSize: '1rem', border: 'none', outline: 'none' }} onChange={e => requestSearch(e.target.value)} value={text} />
                         </div>

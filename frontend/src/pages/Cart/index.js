@@ -3,9 +3,13 @@ import './style.css';
 import { Button, Card, FragmentView, Input, SpaceBox } from '../../components';
 import { MainContext } from '../../helpers/MainContext';
 import Utils from '../../Utils';
+import { useNavigate } from 'react-router-dom';
 
 export default () => {
-    const { cart, removeFromCart, clearCart, getCartPrice } = useContext(MainContext);
+
+    const navigate = useNavigate();
+
+    const { cart } = useContext(MainContext);
     const [coupon, setCoupon] = useState('');
     const [freight, setFreight] = useState(0);
     const [discount, setDiscount] = useState(0);
@@ -97,7 +101,13 @@ export default () => {
                             <SpaceBox space={20}/>
                             <img src='../hero1.png' width={300}/>
                             <p>Seu carrinho está vazio.</p>
-                            <SpaceBox space={20}/>
+                            <SpaceBox space={5}/>
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                <Button className="checkout-button" onClick={() => navigate("/")}>
+                                    <b>&nbsp;&nbsp;&nbsp;Ver Ofertas&nbsp;&nbsp;&nbsp;</b>
+                                </Button>
+                            </div>
+                            <SpaceBox space={15}/>
                         </div>
                     </div>
                 )}
