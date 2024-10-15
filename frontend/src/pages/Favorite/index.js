@@ -18,24 +18,26 @@ export default () => {
     return (
         <FragmentView noPaddingContainer>
             <AccountModal show={showAccountModal} setShow={setShowAccountModal} />
-            {user ? (
-                <GridProductView transparency noAction title={`Seus Favoritos (${products.length})`} icon={null} products={products} />
-            ) : (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <SpaceBox space={20} />
-                        <img src='../hero2.png' width={300} />
-                        <p>Faça login para ver seus favoritos.</p>
-                        <SpaceBox space={5} />
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Button className="checkout-button" onClick={() => setShowAccountModal(true)}>
-                                <b>&nbsp;&nbsp;&nbsp;Fazer Login&nbsp;&nbsp;&nbsp;</b>
-                            </Button>
+            <div className='favorite-container'>
+                {user ? (
+                    <GridProductView transparency noAction title={`Seus Favoritos (${products.length})`} icon={null} products={products} />
+                ) : (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ textAlign: 'center' }}>
+                            <SpaceBox space={20} />
+                            <img src='../hero2.png' width={300} />
+                            <p>Faça login para ver seus favoritos.</p>
+                            <SpaceBox space={5} />
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Button className="checkout-button" onClick={() => setShowAccountModal(true)}>
+                                    <b>&nbsp;&nbsp;&nbsp;Fazer Login&nbsp;&nbsp;&nbsp;</b>
+                                </Button>
+                            </div>
+                            <SpaceBox space={15} />
                         </div>
-                        <SpaceBox space={15} />
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </FragmentView>
     )
 }
