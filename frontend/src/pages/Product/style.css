@@ -54,7 +54,7 @@
 .product-image-main img{
     display: block;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 15px);
     object-fit: contain;
 }
 
