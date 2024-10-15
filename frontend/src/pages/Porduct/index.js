@@ -100,13 +100,13 @@ export default () => {
     }, [])
 
     const handleAddToCart = () => {
-        cart.addToCart(products[1], 1);
+        cart.addToCart(products[2], 1);
     }
 
     return (
         <FragmentView>
             <SpaceBox space={Utils.mobileCheck() ? 0 : 25} />
-            <ProductView product={products[0]} products={products} handleAddToCart={handleAddToCart} />
+            <ProductView product={products[2]} products={products} handleAddToCart={handleAddToCart} />
         </FragmentView>
     )
 }
