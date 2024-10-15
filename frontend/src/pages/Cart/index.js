@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import './style.css';
-import { Button, Card, FragmentView, Input, SpaceBox } from '../../components';
+import { AccountModal, Button, Card, FragmentView, Input, SpaceBox } from '../../components';
 import { MainContext } from '../../helpers/MainContext';
 import Utils from '../../Utils';
 import { useNavigate } from 'react-router-dom';
@@ -9,10 +9,11 @@ export default () => {
 
     const navigate = useNavigate();
 
-    const { cart } = useContext(MainContext);
+    const { user, cart } = useContext(MainContext);
     const [coupon, setCoupon] = useState('');
     const [freight, setFreight] = useState(0);
     const [discount, setDiscount] = useState(0);
+    const [showAccountModal, setShowAccountModal] = useState(false);
 
     const applyCoupon = () => {
         // Exemplo de lógica para aplicar cupom
@@ -28,10 +29,17 @@ export default () => {
         setFreight(50); // Definindo o valor fixo de frete
     };
 
+    const handleFinish = () => {
+        const validUser = user != null || !user;
+        setShowAccountModal(validUser);
+        if(validUser){}
+    }
+
     const totalPrice = (cart.getCartPrice() - discount + freight);
 
     return (
         <FragmentView noPaddingContainer>
+            <AccountModal show={showAccountModal} setShow={setShowAccountModal} />
             <div className="cart-container">
                 {cart.cart.length > 0 ? (
                     <div>
@@ -89,7 +97,7 @@ export default () => {
                             </Card>
                             <SpaceBox space={20}/>
                             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
-                                <Button className="checkout-button">
+                                <Button onClick={handleFinish} className="checkout-button">
                                     <ion-icon name="checkmark-circle-outline"></ion-icon> <b>Finalizar Compra</b>
                                 </Button>
                             </div>
