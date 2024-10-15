@@ -1,50 +1,147 @@
 const ConstData = {
-    menuItems: [
-        {
-          title: "Marcas",
-          items: [
-            { name: "Abercrombie", url: "produtos.html?marca=26" },
-            { name: "Burberry", url: "produtos.html?marca=8" },
-            { name: "Chanel", url: "produtos.html?marca=6" },
-            // Outros itens
-          ],
-        },
-        {
-          title: "Bolsas",
-          items: [
-            { name: "Todas as Bolsas", url: "produtos.html?nome=bolsa" },
-            { name: "New In", url: "produtos.html?estado=N" },
-            { name: "Clutches", url: "produtos.html?nome=clutches" },
-            // Outros itens
-          ],
-        },
-        {
-          title: "Roupas",
-          items: [
-            { name: "Vestidos", url: "produtos.html?nome=vestidos" },
-            { name: "Camisas", url: "produtos.html?nome=camisas" },
-            { name: "Blusas", url: "produtos.html?nome=blusas" },
-            // Outros itens
-          ],
-        },
-        {
-          title: "Acessórios",
-          items: [
-            { name: "Carteiras", url: "produtos.html?nome=carteiras" },
-            { name: "Cintos", url: "produtos.html?nome=cintos" },
-            { name: "Óculos", url: "produtos.html?nome=oculos" },
-            // Outros itens
-          ],
-        },
-        {
-          title: "Sapatos",
-          items: [
-            { name: "De Salto", url: "produtos.html?nome=salto" },
-            { name: "Botas", url: "produtos.html?nome=botas" },
-            { name: "Plataforma", url: "produtos.html?nome=plataforma" },
-            // Outros itens
-          ],
-        },
-    ]
+  PRODUCTS: [
+    {
+      id_product: 0,
+      name: "Bolsa LV",
+      price: 120500,
+      images: [
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png",
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 10,
+      name: "Bolsa GUCCI",
+      price: 220500,
+      images: [
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png",
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 45323,
+      name: "Bolsa LV",
+      price: 320500,
+      images: [
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 54323,
+      name: "Bolsa LV",
+      price: 55670,
+      images: [
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-le-5-a-7-hobo-preta_2023-01-29_20-12-14_0_502.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
+
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 0,
+      name: "Bolsa LV",
+      price: 120500,
+      images: [
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 10,
+      name: "Bolsa GUCCI",
+      price: 220500,
+      images: [
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 45323,
+      name: "Bolsa LV",
+      price: 320500,
+      images: [
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    },
+    {
+      id_product: 54323,
+      name: "Bolsa LV",
+      price: 55670,
+      images: [
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-le-5-a-7-hobo-preta_2023-01-29_20-12-14_0_502.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-saint-laurent-matelasse-loulou-ferragem-dourada-media-bege_2023-02-23_10-45-53_0_453.jpg",
+        "https://m.media-amazon.com/images/I/71yDf+gsd4L._AC_UF1000,1000_QL80_.jpg",
+        "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
+      ],
+      ref: "#8128932",
+      category: "Bolsas",
+      condition: "Novo",
+      offerPrice: 9900,
+      salePrice: 12900,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
+    }
+  ]
 }
 export default ConstData;
