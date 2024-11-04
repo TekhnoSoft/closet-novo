@@ -11,6 +11,7 @@ import Api from "./Api";
 
 function App() {
 
+  const [loaded, setLoaded] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(false);
 
@@ -23,6 +24,7 @@ function App() {
   }, [])
 
   const onCheckHandleAuth = async () => {
+    setLoaded(false);
     await Api.user.auth().then(async data => {
       let auth = await data?.data;
       if(auth.success){
@@ -35,6 +37,7 @@ function App() {
       setAuthenticated(false);
       setUser(null);
     });
+    setLoaded(true);
   }
 
   const logout = (forceReload) => {
@@ -48,7 +51,7 @@ function App() {
 
   return (
     <Router>
-      <MainContext.Provider value={{ cart, user, setUser, logout }}>
+      <MainContext.Provider value={{ loaded, cart, user, setUser, logout }}>
         <Header />
         <ToastContainer style={{ zIndex: 99999999 }} />
         <Routes>

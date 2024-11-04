@@ -1,18 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Container from '../Container';
 import Footer from '../Footer';
 import SpaceBox from '../SpaceBox';
 import Utils from '../../Utils';
+import { MainContext } from '../../helpers/MainContext';
+import If from '../If';
 
-const FragmentViewContent = ({children, noMobileSpace}) => (
+const FragmentViewContent = ({ children, noMobileSpace, loaded }) => (
     <>
-        <SpaceBox space={Utils.mobileCheck() ? 70 : 75}/>
+        <If condition={loaded == true} elseComponent={null}>
+            <SpaceBox space={Utils.mobileCheck() ? 70 : 75} />
             {children}
-        <SpaceBox space={Utils.mobileCheck() ? noMobileSpace ? 0 : 60 : 0}/>
+            <SpaceBox space={Utils.mobileCheck() ? noMobileSpace ? 0 : 60 : 0} />
+        </If>
     </>
 )
 
-export default ({children, noPaddingContainer, noMobileSpace}) => {
+export default ({ children, noPaddingContainer, noMobileSpace }) => {
+
+    const { loaded } = useContext(MainContext);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -22,14 +28,14 @@ export default ({children, noPaddingContainer, noMobileSpace}) => {
         <>
             {noPaddingContainer ? (
                 <>
-                    <FragmentViewContent children={children} noMobileSpace={noMobileSpace}/>
+                    <FragmentViewContent loaded={loaded} children={children} noMobileSpace={noMobileSpace} />
                 </>
             ) : (
                 <Container>
-                    <FragmentViewContent children={children}/>
+                    <FragmentViewContent loaded={loaded} children={children} />
                 </Container>
             )}
-            <Footer/>
+            <Footer />
         </>
     )
 }
