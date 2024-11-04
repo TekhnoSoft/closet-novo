@@ -1,0 +1,129 @@
+.register-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.register-title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.register-step {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.h3-account {
+    font-size: 1.5rem;
+    color: #5e8975;
+}
+
+.input-group-div {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.input-icon {
+    font-size: 1.2rem;
+    color: #5e8975;
+    margin-right: 5px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.accont-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.next-button, .submit-button {
+    background-color: #5e8975;
+    color: #fff;
+}
+
+.next-button:hover, .submit-button:hover {
+    background-color: #4e7164;
+}
+
+.back-button {
+    background-color: #ddd;
+    color: #333;
+    width: 60px !important;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.back-button:hover {
+    background-color: #ccc;
+}
+
+.progress-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.progress-bar .step {
+    width: 20px;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 8px;
+    transition: background-color 0.2s;
+}
+
+.progress-bar .step.active {
+    background-color: #5e8975;
+}
+
+.accont-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 500px) {
+    .register-container {
+        padding: 15px;
+    }
+
+    .register-title {
+        font-size: 1.5rem;
+    }
+
+    .accont-button {
+        width: 100%;
+    }
+    .back-button {
+        margin-right: 10px;
+    }
+
+    .register-container {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

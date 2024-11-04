@@ -117,7 +117,7 @@ export default () => {
     cart.addToCart(products[2], 1);
     Utils.toast({
       type: "success",
-      text: "Produto adicionado!"
+      text: "Produto adicionado a sacola!"
     })
   }
 

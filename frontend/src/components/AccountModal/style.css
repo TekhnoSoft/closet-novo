@@ -24,8 +24,8 @@
 }
 
 .input-group-div{
-    height: 48px;
-    width: 48px;
+    height: 38px !important;
+    width: 38px !important;
     border-radius: 4px 0 0 4px;
     text-align: center;
     display: flex;

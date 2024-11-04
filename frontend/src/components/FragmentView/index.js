@@ -4,15 +4,15 @@ import Footer from '../Footer';
 import SpaceBox from '../SpaceBox';
 import Utils from '../../Utils';
 
-const FragmentViewContent = ({children}) => (
+const FragmentViewContent = ({children, noMobileSpace}) => (
     <>
         <SpaceBox space={Utils.mobileCheck() ? 70 : 75}/>
             {children}
-        <SpaceBox space={Utils.mobileCheck() ? 60 : 0}/>
+        <SpaceBox space={Utils.mobileCheck() ? noMobileSpace ? 0 : 60 : 0}/>
     </>
 )
 
-export default ({children, noPaddingContainer}) => {
+export default ({children, noPaddingContainer, noMobileSpace}) => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -22,7 +22,7 @@ export default ({children, noPaddingContainer}) => {
         <>
             {noPaddingContainer ? (
                 <>
-                    <FragmentViewContent children={children}/>
+                    <FragmentViewContent children={children} noMobileSpace={noMobileSpace}/>
                 </>
             ) : (
                 <Container>

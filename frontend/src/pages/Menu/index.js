@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import './style.css';
 import { Button, FragmentView, SpaceBox } from '../../components';
 import { MainContext } from '../../helpers/MainContext';
+import Utils from '../../Utils';
 
 const menuItems = [
     {
@@ -47,13 +48,17 @@ const menuItems = [
 
 export default () => {
 
-    const { user } = useContext(MainContext);
+    const { user, logout } = useContext(MainContext);
 
     const [showSubmenu, setShowSubmenu] = useState(null);
 
     const toggleSubmenu = (index) => {
         setShowSubmenu(showSubmenu === index ? null : index);
     };
+
+    const handleLogout = () => {
+        logout(true);
+    }
 
     return (
         <FragmentView>
@@ -97,7 +102,7 @@ export default () => {
                                     <span>Configurações</span>
                                 </div>
                             </li>
-                            <li className='menu-item menu-unique-item'>
+                            <li className='menu-item menu-unique-item' onClick={handleLogout}>
                                 <div className='menu-unique-title'>
                                     &nbsp;<ion-icon name="log-out-outline"></ion-icon>&nbsp;
                                     <span>sair</span>

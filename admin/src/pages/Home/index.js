@@ -5,7 +5,7 @@ import { FragmentView } from '../../components';
 export default () => {
     return (
         <FragmentView>
-            eae
+            dasd
         </FragmentView>
     )
 }

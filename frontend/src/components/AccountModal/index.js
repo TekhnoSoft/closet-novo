@@ -7,12 +7,14 @@ import Input from '../Input';
 import './style.css';
 import Utils from '../../Utils';
 import { useNavigate } from 'react-router-dom';
+import Api from '../../Api';
+import StatusResponse from '../../helpers/StatusResponse';
 
 export default ({ show, setShow }) => {
     
     const navigate = useNavigate();
     
-    const { user } = useContext(MainContext);
+    const { user, setUser } = useContext(MainContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,6 +23,39 @@ export default ({ show, setShow }) => {
         setShow(false);
         navigate("/register");
     }
+
+    const handleLogin = async () => {
+        if (!email?.trim()) {
+            return Utils.toast({ type: "error", text: "Digite seu email." });
+        }
+        if (!password?.trim()) {
+            return Utils.toast({ type: "error", text: "Digite sua senha." });
+        }
+    
+        try {
+            const data = await Api.user.login({ email, password });
+    
+            if (data?.status !== StatusResponse.isOk()) {
+                return Utils.toast({ type: "error", text: data?.response?.data?.message || "Email/Senha incorretos." });
+            }
+    
+            Utils.toast({ type: "success", text: "Logado com sucesso!" });
+            const token = data?.data?.token;
+            await localStorage.setItem("closetnovo_cliente_token", token);
+    
+            const dataAuth = await Api.user.get(token);
+    
+            if (dataAuth?.status === StatusResponse.isOk()) {
+                Utils.toast("success", "Logado com sucesso!");
+                setUser(dataAuth?.data);
+                setShow(false);
+                //navigate("/");
+            }
+    
+        } catch (err) {
+            Utils.toast({ type: "error", text: err?.message || "Ocorreu um erro durante o login." });
+        }
+    };
 
     return (
         <If condition={user == null || !user} elseComponent={null}>
@@ -43,7 +78,7 @@ export default ({ show, setShow }) => {
                                 label="Email" 
                                 value={email} 
                                 setValue={setEmail} 
-                                style={{width: '100%', marginLeft: '-2px'}}
+                                style={{width: '100%', marginLeft: '-4px'}}
                             />
                         </div>
                         <div className="input-group">
@@ -55,10 +90,10 @@ export default ({ show, setShow }) => {
                                 label="Senha" 
                                 value={password} 
                                 setValue={setPassword} 
-                                style={{width: '100%', marginLeft: '-2px'}}
+                                style={{width: '100%', marginLeft: '-4px'}}
                             />
                         </div>
-                        <Button className="login-button" onClick={() => {/* lógica de login */}}>
+                        <Button className="login-button" onClick={handleLogin}>
                             <b>Entrar</b>
                         </Button>
                     </div>

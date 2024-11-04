@@ -115,6 +115,9 @@ export default () => {
 
     const handleProfile = () => {
         setShowAccountModal(user == null || !user)
+        if(user){
+            navigate("/profile")
+        }
     }
 
     const handleCart = () => {
