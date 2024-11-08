@@ -4,7 +4,15 @@ import Environment from "./Environment";
 const API_BASE = Environment.API_BASE;
 
 const Api = {
-    general: {},
+    general: {
+        categories: async () => {
+            return await axios.get(`${API_BASE}/categories/get`).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        }
+    },
     user: {
         auth: async () => {
             return await axios.get(`${API_BASE}/users/auth`, Environment.HEADERS_CLIENTE).then(async (response) => {

@@ -24,8 +24,10 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 const usersRoute = require('./routes/users');
+const categoriesRoute = require('./routes/categories');
 
 app.use('/users', usersRoute);
+app.use('/categories', categoriesRoute);
 
 
 if(process.env.DEVELOPMENT_MODE == "true"){

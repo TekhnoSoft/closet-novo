@@ -132,6 +132,14 @@ export default () => {
         navigate(`/search`);
     }
 
+    const handleGoSell = () => {
+        if(user){
+            navigate('/profile')
+        }else{
+            setShowAccountModal(true);
+        }
+    }
+
     return (
         Utils.mobileCheck() ? (
             <>
@@ -199,7 +207,7 @@ export default () => {
                                     <li className='menu-dropdown-item'>Novos</li>
                                 </ul>
                             </div>
-                            &nbsp;&nbsp;<b className='text-primary-color bold cursor-pointer'>COMEÇE&nbsp;A&nbsp;VENDER</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;<b className='text-primary-color bold cursor-pointer' onClick={handleGoSell}>COMEÇE&nbsp;A&nbsp;VENDER</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                                 <div onClick={handleSearch} style={{ cursor: 'pointer' }}>
                                     <ion-icon style={{ fontSize: '16pt' }} name="search-outline"></ion-icon>

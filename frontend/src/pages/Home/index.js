@@ -7,6 +7,8 @@ import ConstData from '../../helpers/ConstData';
 
 export default () => {
 
+    const {categories} = useContext(MainContext);
+
     const [itemsCarousel, setItemsCarousel] = useState([
         {
             id: 0,
@@ -43,54 +45,6 @@ export default () => {
             ctaText: "Ver mais",
             ctaLink: "/"
         }
-    ]);
-
-    const [categories, setCategories] = useState([
-        {
-            id_category: 0,
-            name: "Bolsas",
-            image: "https://www.galaxcommerce.com.br/sistema/upload/3785/produtos/bolsa-gucci-marmont-shoulder-preta_2022-07-28_13-54-34_0_436.png"
-        },
-        {
-            id_category: 0,
-            name: "Sapatos",
-            image: "https://img.irroba.com.br/fit-in/600x600/filters:fill(fff):quality(80)/grifiaou/catalog/calcados/social/italy/sem-gorgurao/preto-liso/sapato-social-masculino-grife-couro.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Cintos",
-            image: "https://www.acessoriosdgriffe.com.br/wp-content/uploads/2018/08/264.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Blusas",
-            image: "https://br.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-camiseta-em-degrad%C3%A9-monogram-lvse-ready-to-wear--HKY46WNPG904_PM2_Front%20view.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Relogios",
-            image: "https://ecx.images-amazon.com/images/I/51DPFt2RGuL.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Sapatos",
-            image: "https://img.irroba.com.br/fit-in/600x600/filters:fill(fff):quality(80)/grifiaou/catalog/calcados/social/italy/sem-gorgurao/preto-liso/sapato-social-masculino-grife-couro.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Cintos",
-            image: "https://www.acessoriosdgriffe.com.br/wp-content/uploads/2018/08/264.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Blusas",
-            image: "https://br.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-camiseta-em-degrad%C3%A9-monogram-lvse-ready-to-wear--HKY46WNPG904_PM2_Front%20view.jpg"
-        },
-        {
-            id_category: 0,
-            name: "Relogios",
-            image: "https://ecx.images-amazon.com/images/I/51DPFt2RGuL.jpg"
-        },
     ]);
 
     const [products, setProducts] = useState(ConstData.PRODUCTS);

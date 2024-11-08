@@ -15,13 +15,22 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(false);
 
+  const [categories, setCategories] = useState([]);
+
   const [pageIndex, setPageIndex] = useState(Number(localStorage.getItem("closetnovo_bottomtab_index") || 1));
 
   const cart = useCart();
 
   useEffect(() => {
     onCheckHandleAuth();
+    onLoadEssentials();
   }, [])
+
+  const onLoadEssentials = async () => {
+    await Api.general.categories().then(async responseData => {
+      setCategories(responseData?.data?.data);
+    })
+  }
 
   const onCheckHandleAuth = async () => {
     setLoaded(false);
@@ -51,7 +60,7 @@ function App() {
 
   return (
     <Router>
-      <MainContext.Provider value={{ loaded, cart, user, setUser, logout }}>
+      <MainContext.Provider value={{ loaded, cart, user, setUser, logout, categories }}>
         <Header />
         <ToastContainer style={{ zIndex: 99999999 }} />
         <Routes>

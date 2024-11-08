@@ -61,7 +61,7 @@ export default ({categories}) => {
             <div className={`wrapper ${Utils.mobileCheck() ? 'mb-2' : 'mb-4'} mt-1`}>
                 <ul className="items-category">
                     {categories?.map((a, index) => (
-                        <CategoryItem index={index} id={a?.id_category} imagem={a?.image} nome={a?.name} />
+                        <CategoryItem index={index} id={a?.id} imagem={a?.image} name={a?.name} />
                     ))}
                 </ul>
             </div>

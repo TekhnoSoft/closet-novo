@@ -60,6 +60,10 @@ export default () => {
         logout(true);
     }
 
+    const handleGoSell = () => {
+        
+    }
+
     return (
         <FragmentView>
             <div className='menu'>
@@ -113,7 +117,7 @@ export default () => {
                 </ul>
             </div>
             <SpaceBox space={20} />
-            <Button style={{ width: '100%' }}>
+            <Button onClick={handleGoSell} style={{ width: '100%' }}>
                 <b>COMEÇE A VENDER</b>
             </Button>
             <SpaceBox space={20} />

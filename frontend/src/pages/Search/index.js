@@ -1,11 +1,43 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Button, Card, Checkbox, Container, FlatButton, FragmentView, InputRange, Modal, Option, ProductView, Select, SpaceBox } from '../../components';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import Utils from '../../Utils';
 import ConstData from '../../helpers/ConstData';
+import { MainContext } from '../../helpers/MainContext';
 
-const FilterComponent = ({ selectSituacao, setSelectSituacao, selectOrder, setSelectOrder, precoValue, setPrecoValue, categorias, marcas }) => {
+const FilterComponent = ({ selectSituacao, setSelectSituacao, selectOrder, setSelectOrder, precoValue, setPrecoValue, categories, marcas }) => {
+
+    const [categoriesCopy, setCategoriesCopy] = useState(categories);
+
+    useEffect(() => {
+        const storedCategory = JSON.parse(localStorage.getItem("tk_beauty_search_by_category"));
+
+        if (storedCategory && storedCategory.id) {
+            setCategoriesCopy(prevCategories =>
+                prevCategories.map(category =>
+                    category.id === storedCategory.id
+                        ? { ...category, checked: true }
+                        : category
+                )
+            );
+            localStorage.removeItem("tk_beauty_search_by_category");
+            filterUpdate();
+        }
+    }, []);
+
+    const handleSetChecked = (id) => {
+        setCategoriesCopy((prevCategories) =>
+            prevCategories.map((c) =>
+                c.id === id ? { ...c, checked: !c.checked } : c
+            )
+        );
+        filterUpdate();
+    };
+
+    const filterUpdate = () => {
+
+    }
 
     return (
         <Card 
@@ -44,8 +76,8 @@ const FilterComponent = ({ selectSituacao, setSelectSituacao, selectOrder, setSe
                 <div className='input-box-range mb-1'>
                     <div className="input-label-range">Categorias</div>
                     <SpaceBox space={5}/>
-                    {categorias?.map(c => (
-                        <Checkbox checked={c.checked} noMargin flexStart>
+                    {categoriesCopy?.map(c => (
+                        <Checkbox checked={c.checked} setChecked={() => {handleSetChecked(c.id)}} noMargin flexStart>
                             {c?.name}
                         </Checkbox>
                     ))}
@@ -74,44 +106,13 @@ const FilterComponent = ({ selectSituacao, setSelectSituacao, selectOrder, setSe
 
 export default () => {
 
+    const {categories} = useContext(MainContext);
+
     const inputRef = useRef(null);
 
     const [loaded, setLoaded] = useState(false);
     const [text, setText] = useState(localStorage.getItem("search_text") || null);
     const [results, setResults] = useState([]);
-
-    const [categorias, setCategorias] = useState([
-        {
-            id: 0,
-            name: "Blusas",
-            checked: false,
-        },
-        {
-            id: 1,
-            name: "Calças",
-            checked: false,
-        },
-        {
-            id: 2,
-            name: "Bolsas",
-            checked: false,
-        },
-        {
-            id: 0,
-            name: "Blusas",
-            checked: false,
-        },
-        {
-            id: 1,
-            name: "Calças",
-            checked: false,
-        },
-        {
-            id: 2,
-            name: "Bolsas",
-            checked: false,
-        },
-    ]);
 
     const [marcas, setMarcas] = useState([
         {
@@ -189,7 +190,7 @@ export default () => {
                     setSelectOrder={setSelectOrder}
                     precoValue={precoValue}
                     setPrecoValue={setPrecoValue}
-                    categorias={categorias}
+                    categories={categories}
                     marcas={marcas}
                 />
             </Modal>
@@ -217,7 +218,7 @@ export default () => {
                                 setSelectOrder={setSelectOrder}
                                 precoValue={precoValue}
                                 setPrecoValue={setPrecoValue}
-                                categorias={categorias}
+                                categories={categories}
                                 marcas={marcas}
                             />
                         ) : (null)}
