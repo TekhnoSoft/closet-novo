@@ -8,6 +8,11 @@ const Address = database.define('tb_address', {
         allowNull: false,
         primaryKey: true
     },
+    selected: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
     name: {
         type: Sequelize.STRING,
         allowNull: false,

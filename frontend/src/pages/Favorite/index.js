@@ -1,18 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './style.css';
 import { AccountModal, Button, FragmentView, SpaceBox } from '../../components';
 import GridProductView from '../../components/GridProductView';
 import ConstData from '../../helpers/ConstData';
 import { MainContext } from '../../helpers/MainContext';
 import { useNavigate } from 'react-router-dom';
+import Api from '../../Api';
 
 export default () => {
 
     const navigate = useNavigate();
 
-    const { user } = useContext(MainContext);
+    const { user, favorites } = useContext(MainContext);
 
-    const [products, setProducts] = useState(ConstData.PRODUCTS);
     const [showAccountModal, setShowAccountModal] = useState(false);
 
     return (
@@ -20,7 +20,7 @@ export default () => {
             <AccountModal show={showAccountModal} setShow={setShowAccountModal} />
             <div className='favorite-container'>
                 {user ? (
-                    <GridProductView transparency noAction title={`Seus Favoritos (${products.length})`} icon={null} products={products} />
+                    <GridProductView transparency noAction title={`Seus Favoritos (${favorites.length})`} icon={null} products={favorites} />
                 ) : (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <div style={{ textAlign: 'center' }}>

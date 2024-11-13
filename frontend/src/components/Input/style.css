@@ -35,6 +35,7 @@
     transition: 250ms;
     user-select: none;
     pointer-events: none;
+    margin-bottom: 0px;
   }
   .input-box .input-label svg {
     position: relative;

@@ -1,56 +1,49 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './style.css';
 import { Button, FragmentView, SpaceBox } from '../../components';
 import { MainContext } from '../../helpers/MainContext';
-import Utils from '../../Utils';
-
-const menuItems = [
-    {
-        name: "Marcas",
-        subItems: [
-            "Adidas", "Nike", "Puma", "Reebok", "Under Armour",
-            "New Balance", "Asics", "Vans", "Converse", "Fila"
-        ]
-    },
-    {
-        name: "Bolsas",
-        subItems: [
-            "Bolsa Tote", "Bolsa Crossbody", "Bolsa de Ombro",
-            "Bolsa Clutch", "Bolsa Backpack", "Bolsa de Coração",
-            "Bolsa de Praia", "Bolsa de Viagem", "Bolsa de Lona", "Bolsa de Couro"
-        ]
-    },
-    {
-        name: "Roupas",
-        subItems: [
-            "Camiseta", "Calça Jeans", "Jaqueta", "Vestido",
-            "Shorts", "Saia", "Camisa", "Moletom",
-            "Blusa", "Roupa de Banho"
-        ]
-    },
-    {
-        name: "Acessórios",
-        subItems: [
-            "Cinto", "Relógio", "Óculos de Sol", "Bijuterias",
-            "Chapéu", "Cachecol", "Luvas", "Meia",
-            "Pulseira", "Brinco"
-        ]
-    },
-    {
-        name: "Sapatos",
-        subItems: [
-            "Tênis", "Bota", "Sandalha", "Sapato Social",
-            "Chinelo", "Botinha", "Oxford", "Mocassim",
-            "Sapato de Festa", "Tênis de Corrida"
-        ]
-    }
-];
+import { useNavigate } from 'react-router-dom';
 
 export default () => {
 
-    const { user, logout } = useContext(MainContext);
+    const navigate = useNavigate();
+
+    const { user, logout, brands, categories } = useContext(MainContext);
 
     const [showSubmenu, setShowSubmenu] = useState(null);
+
+    const [menuItems, setMenuItems] = useState([]);
+
+    useEffect(() => {
+        setMenuItems([
+            {
+                id: "marcas",
+                name: "Marcas",
+                subItems: brands
+            },
+            {
+                id: "categorias",
+                name: "Categorias",
+                subItems: categories
+            },
+        ])
+    }, [brands, categories])
+
+    const handleToSearchLink = (linkType, linkId, name) => {
+        switch(linkType){
+            case "marcas":
+                localStorage.setItem("tk_beauty_search_by_brand", JSON.stringify({id: linkId, name: name}));
+                break;
+            case "categorias":
+                localStorage.setItem("tk_beauty_search_by_category", JSON.stringify({id: linkId, name: name}));
+                break;
+        }
+        navigate("/search");
+    }
+
+    const handlePofile = () => {
+        navigate("/profile");
+    }
 
     const toggleSubmenu = (index) => {
         setShowSubmenu(showSubmenu === index ? null : index);
@@ -61,7 +54,8 @@ export default () => {
     }
 
     const handleGoSell = () => {
-        
+        localStorage.setItem("profile_navigation_index", "Produtos");
+        navigate("/profile");
     }
 
     return (
@@ -69,7 +63,7 @@ export default () => {
             <div className='menu'>
                 <ul className='menu-list'>
                     {user && (
-                        <li className='menu-item menu-unique-item'>
+                        <li onClick={handlePofile} className='menu-item menu-unique-item'>
                             <div className='menu-unique-title'>
                                 &nbsp;<ion-icon name="person-outline"></ion-icon>&nbsp;
                                 <span>Perfil</span>
@@ -91,21 +85,29 @@ export default () => {
                             <ul className={`submenu-list ${showSubmenu === index ? 'show' : ''}`}>
                                 <SpaceBox space={5} />
                                 {item.subItems.map((subItem, subIndex) => (
-                                    <li key={subIndex} className='submenu-item'>
-                                        {subItem}
+                                    <li key={subIndex} onClick={() => {handleToSearchLink(item.id, subItem.id, subItem.name)}} className='submenu-item'>
+                                        {subItem.name}
                                     </li>
                                 ))}
                             </ul>
                         </li>
                     ))}
+
+                    <li className='menu-item menu-unique-item'>
+                        <div className='menu-unique-title'>
+                            &nbsp;<ion-icon name="newspaper-outline"></ion-icon>&nbsp;
+                            <span>Política de Privacidade</span>
+                        </div>
+                    </li>
+                    <li className='menu-item menu-unique-item'>
+                        <div className='menu-unique-title'>
+                            &nbsp;<ion-icon name="shield-half-outline"></ion-icon>&nbsp;
+                            <span>Termos de Uso</span>
+                        </div>
+                    </li>
+
                     {user && (
                         <>
-                            <li className='menu-item menu-unique-item'>
-                                <div className='menu-unique-title'>
-                                    &nbsp;<ion-icon name="settings-outline"></ion-icon>&nbsp;
-                                    <span>Configurações</span>
-                                </div>
-                            </li>
                             <li className='menu-item menu-unique-item' onClick={handleLogout}>
                                 <div className='menu-unique-title'>
                                     &nbsp;<ion-icon name="log-out-outline"></ion-icon>&nbsp;

@@ -19,3 +19,5 @@ export { default as InputRange } from './InputRange';
 export { default as Checkbox } from './Checkbox';
 export { default as If } from './If';
 export { default as AccountModal } from './AccountModal';
+export { default as Ship } from './Ship';
+export { default as Radiobox } from './Radiobox';

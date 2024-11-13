@@ -14,7 +14,7 @@ export default ({ show, setShow }) => {
     
     const navigate = useNavigate();
     
-    const { user, setUser } = useContext(MainContext);
+    const { user, setUser, onLoadFavorites } = useContext(MainContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -47,8 +47,11 @@ export default ({ show, setShow }) => {
     
             if (dataAuth?.status === StatusResponse.isOk()) {
                 Utils.toast("success", "Logado com sucesso!");
-                setUser(dataAuth?.data);
+                setUser(dataAuth?.data?.data);
                 setShow(false);
+                if(onLoadFavorites){
+                    onLoadFavorites(token);
+                }
                 //navigate("/");
             }
     

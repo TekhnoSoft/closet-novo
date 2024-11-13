@@ -14,90 +14,37 @@ export default () => {
 
     const navigate = useNavigate();
 
-    const { user, cart } = useContext(MainContext);
+    const { user, cart, categories, brands } = useContext(MainContext);
 
     const [showAccountModal, setShowAccountModal] = useState(false);
 
     const [searchModal, setSearchModal] = useState(false);
     const [search, setSearch] = useState(null);
 
-    const menuItems = [
-        { 
-            name: "Marcas", 
-            subItems: [
-                "Adidas", 
-                "Nike", 
-                "Puma", 
-                "Reebok", 
-                "Under Armour", 
-                "New Balance", 
-                "Asics", 
-                "Vans", 
-                "Converse", 
-                "Fila"
-            ] 
-        },
-        { 
-            name: "Bolsas", 
-            subItems: [
-                "Bolsa Tote", 
-                "Bolsa Crossbody", 
-                "Bolsa de Ombro", 
-                "Bolsa Clutch", 
-                "Bolsa Backpack", 
-                "Bolsa de Coração", 
-                "Bolsa de Praia", 
-                "Bolsa de Viagem", 
-                "Bolsa de Lona", 
-                "Bolsa de Couro"
-            ] 
-        },
-        { 
-            name: "Roupas", 
-            subItems: [
-                "Camiseta", 
-                "Calça Jeans", 
-                "Jaqueta", 
-                "Vestido", 
-                "Shorts", 
-                "Saia", 
-                "Camisa", 
-                "Moletom", 
-                "Blusa", 
-                "Roupa de Banho"
-            ] 
-        },
-        { 
-            name: "Acessórios", 
-            subItems: [
-                "Cinto", 
-                "Relógio", 
-                "Óculos de Sol", 
-                "Bijuterias", 
-                "Chapéu", 
-                "Cachecol", 
-                "Luvas", 
-                "Meia", 
-                "Pulseira", 
-                "Brinco"
-            ] 
-        },
-        { 
-            name: "Sapatos", 
-            subItems: [
-                "Tênis", 
-                "Bota", 
-                "Sandalha", 
-                "Sapato Social", 
-                "Chinelo", 
-                "Botinha", 
-                "Oxford", 
-                "Mocassim", 
-                "Sapato de Festa", 
-                "Tênis de Corrida"
-            ] 
-        }
-    ];
+    const [address, setAddress] = useState(null);
+
+    const [menuItems, setMenuItems] = useState([]);
+
+    useEffect(() => {
+        let address = user?.addresses?.filter(a => { return a.selected})[0];
+        let displayFullAddress = `${address?.city}-${address?.state}, ${address?.number}${address?.complement}, ${address?.neighborhood}, ${address?.street}`;
+        setAddress(displayFullAddress);
+    }, [user])
+
+    useEffect(() => {
+        setMenuItems([
+            { 
+                id: "marcas",
+                name: "Marcas", 
+                subItems: brands
+            },
+            { 
+                id: "categorias",
+                name: "Categorias", 
+                subItems: categories
+            },
+        ])
+    }, [brands, categories])
 
     const [hoveredItem, setHoveredItem] = useState(null);
 
@@ -120,6 +67,13 @@ export default () => {
         }
     }
 
+    const handleFavorites = () => {
+        setShowAccountModal(user == null || !user)
+        if(user){
+            navigate("/favorites")
+        }
+    }
+
     const handleCart = () => {
         navigate("/cart");
     }
@@ -134,9 +88,35 @@ export default () => {
 
     const handleGoSell = () => {
         if(user){
+            localStorage.setItem("profile_navigation_index", "Produtos");
             navigate('/profile')
         }else{
             setShowAccountModal(true);
+        }
+    }
+
+    const handleToSearchLink = (linkType, linkId, name) => {
+        switch(linkType){
+            case "marcas":
+                localStorage.setItem("tk_beauty_search_by_brand", JSON.stringify({id: linkId, name: name}));
+                break;
+            case "categorias":
+                localStorage.setItem("tk_beauty_search_by_category", JSON.stringify({id: linkId, name: name}));
+                break;
+        }
+        if(window.location.pathname == "/search"){
+            window.location.reload();
+        }else{
+            navigate("/search");
+        }
+    }
+
+    const handleToSearchSituation = () => {
+        localStorage.setItem("tk_beauty_search_by_situation", 1);
+        if(window.location.pathname == "/search"){
+            window.location.reload();
+        }else{
+            navigate("/search");
         }
     }
 
@@ -153,7 +133,7 @@ export default () => {
                                     <div style={{ width: '25px', display: 'flex', alignItems: 'center' }}>
                                         <ion-icon name="location-outline" size={"large"}></ion-icon>
                                     </div>&nbsp;
-                                    <span>Planaltida-DF, Estância 3...</span>
+                                    <span>{address}</span>
                                 </>
                             ) : (
                                 <div onClick={handleProfile} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -183,7 +163,26 @@ export default () => {
                 <div className='header'>
                     <Container>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <img onClick={handleHome} className='header-logo' src={'../logo.svg'} />
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                                <img onClick={handleHome} className='header-logo' src={'../logo.svg'} />&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div className='location-pin'>
+                                    {user ? (
+                                        <>
+                                            <div style={{ width: '25px', display: 'flex', alignItems: 'center' }}>
+                                                <ion-icon name="location-outline" size={"large"}></ion-icon>
+                                            </div>&nbsp;
+                                            <span>{address}</span>
+                                        </>
+                                    ) : (
+                                        <div onClick={handleProfile} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <div style={{ width: '25px', display: 'flex', alignItems: 'center' }}>
+                                                <ion-icon name="person-outline" style={{ fontSize: '14pt', color: '#5e8975' }}></ion-icon>
+                                            </div>&nbsp;
+                                            <span>Login / Registre-se</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                             <div className='menu-dropdown'>
                                 <ul>
                                     {menuItems.map((item, index) => (
@@ -196,24 +195,27 @@ export default () => {
                                             <span>{item.name}</span>&nbsp;
                                             <ion-icon name="chevron-down-outline"></ion-icon>
                                             {hoveredItem === index && (
-                                                <div className="dropdown-content">
+                                                <div className="dropdown-content" style={{height: '400px', overflow: 'auto'}}>
                                                     {item.subItems.map((subItem, subIndex) => (
-                                                        <div key={subIndex}>{subItem}</div>
+                                                        <div key={subIndex} onClick={() => {handleToSearchLink(item?.id, subItem.id, subItem.name)}}>{subItem.name}</div>
                                                     ))}
                                                 </div>
                                             )}
                                         </li>
                                     ))}
-                                    <li className='menu-dropdown-item'>Novos</li>
+                                    <li className='menu-dropdown-item' onClick={handleToSearchSituation}>Novos</li>
                                 </ul>
                             </div>
-                            &nbsp;&nbsp;<b className='text-primary-color bold cursor-pointer' onClick={handleGoSell}>COMEÇE&nbsp;A&nbsp;VENDER</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;<b className='text-primary-color bold cursor-pointer' onClick={handleGoSell}>COMEÇE&nbsp;A&nbsp;VENDER</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                                 <div onClick={handleSearch} style={{ cursor: 'pointer' }}>
                                     <ion-icon style={{ fontSize: '16pt' }} name="search-outline"></ion-icon>
                                 </div>&nbsp;&nbsp;&nbsp;
                                 <div onClick={handleProfile} style={{ cursor: 'pointer' }}>
                                     <ion-icon style={{ fontSize: '16pt' }} name="person-outline"></ion-icon>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div onClick={handleFavorites} style={{ cursor: 'pointer' }}>
+                                    <ion-icon style={{ fontSize: '16pt' }} name="heart-outline"></ion-icon>
                                 </div>&nbsp;&nbsp;&nbsp;
                                 <div onClick={handleCart} style={{ cursor: 'pointer' }}>
                                     <ion-icon style={{ fontSize: '16pt' }} name="bag-outline"></ion-icon>

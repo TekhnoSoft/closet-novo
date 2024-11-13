@@ -17,7 +17,7 @@ const useCart = () => {
     const updatedCart = [...cart];
   
     // Encontra o índice do produto no carrinho
-    const productIndex = updatedCart.findIndex(p => p.id_product === product.id_product);
+    const productIndex = updatedCart.findIndex(p => p.id === product.id);
   
     if (productIndex !== -1) {
       // Se o produto já existe no carrinho, verifica e atualiza a quantidade corretamente
@@ -39,15 +39,15 @@ const useCart = () => {
   };
 
   // Remover um produto com base no id_product
-  const removeFromCart = (id_product) => {
-    const updatedCart = cart.filter(p => p.id_product !== id_product);
+  const removeFromCart = (id) => {
+    const updatedCart = cart.filter(p => p.id !== id);
     saveCart(updatedCart);
   };
 
   // Atualizar a quantidade de um produto específico
   const updateCart = (product, qtd) => {
     const updatedCart = cart.map(p =>
-      p.id_product === product.id_product ? { ...p, qtd } : p
+      p.id === product.id ? { ...p, qtd } : p
     );
     saveCart(updatedCart);
   };

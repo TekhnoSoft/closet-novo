@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './style.css';
 import Utils from '../../Utils';
 import SpaceBox from '../SpaceBox';
+import { MainContext } from '../../helpers/MainContext';
 
 export default () => {
+
+    const {categories, brands} = useContext(MainContext);
+
     return (
         <footer className='footer' style={{padding: Utils.mobileCheck() ? "10px 20px" : "40px 20px"}}>
             <div className='footer-content'>
@@ -18,44 +22,32 @@ export default () => {
                 </div>
 
                 <div className='footer-section'>
-                    <h4>Marcas</h4>
-                    <ul>
-                        <li><a href='#'>Gucci</a></li>
-                        <li><a href='#'>Louis Vuitton</a></li>
-                        <li><a href='#'>Prada</a></li>
-                        <li><a href='#'>Balenciaga</a></li>
-                    </ul>
-                </div>
-
-                <div className='footer-section'>
-                    <h4>Gêneros</h4>
-                    <ul>
-                        <li><a href='#'>Masculino</a></li>
-                        <li><a href='#'>Feminino</a></li>
-                        <li><a href='#'>Unisex</a></li>
-                    </ul>
-                </div>
-
-                <div className='footer-section'>
                     <h4>Perfil</h4>
                     <ul>
-                        <li><a href='#'>Endereços</a></li>
+                        <li><a href='#'>Meu Perfil</a></li>
                         <li><a href='#'>Meus Produtos</a></li>
-                        <li><a href='#'>Configurações</a></li>
+                        <li><a href='#'>Meus Endereços</a></li>
                         <li><a href='#'>Fazer Login</a></li>
                         <li><a href='#'>Registre-se</a></li>
                     </ul>
                 </div>
 
                 <div className='footer-section'>
-                    <h4>Informações</h4>
+                    <h4>Temos & Políticas</h4>
                     <ul>
                         <li><a href='#'>Política de Privacidade</a></li>
                         <li><a href='#'>Termos de Uso</a></li>
                     </ul>
+                </div>
+
+                <div className='footer-section'>
+                    <h4>Informações</h4>
                     <p><strong>Endereço:</strong> Rua Exemplo, 123, São Paulo, SP</p>
                     <p><strong>Telefone:</strong> (11) 1234-5678</p>
                     <p><strong>Email:</strong> contato@closetnovo.com</p>
+                    <div>
+                        <img style={{borderRadius: '8px'}} width={'250px'} src='../payment_methods.webp'/>
+                    </div>
                 </div>
             </div>
 

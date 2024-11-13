@@ -1,0 +1,168 @@
+/* Cor Primária */
+:root {
+    --primary-color: #5e8975;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.tab.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.tab ion-icon {
+    margin-right: 8px;
+}
+
+/* Tab Content */
+.tab-content {
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+}
+
+/* Card de Dados do Perfil */
+.profile-card {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h4 {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: var(--primary-color);
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+/* Card de Atualização de Senha */
+.password-card {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.password-card h4 {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: var(--primary-color);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.button-profile {
+    padding: 16px 16px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 5px 0;
+}
+
+button ion-icon {
+    margin-right: 8px;
+}
+
+.btn-new-address {
+    background-color: #5e8975;
+}
+
+.btn-edit {
+    color: #FFC107;
+    border: solid 1px #FFC107;
+    background-color: #fff;
+}
+
+.btn-remove {
+    color: #F44336;
+    border: solid 1px #F44336;
+    background-color: #fff;
+}
+
+/* Lista de Endereços e Produtos */
+.address-list,
+.product-list-p {
+    margin-top: 20px;
+}
+
+.address-item,
+.product-item-p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.address-item p,
+.product-item-p p {
+    flex-grow: 1;
+}
+
+.product-item-p {
+    display: flex;
+    align-items: center;
+}
+
+.product-image-container {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.product-item-p .product-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.product-info-p {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}

@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const database = require('../database');
 const ProductImage = require('./product_images');
 const Brand = require('./brand');
+const Category = require('./category');
 
 const Product = database.define('tb_products', {
     id: {
@@ -37,6 +38,35 @@ const Product = database.define('tb_products', {
     status:{
         type: Sequelize.STRING,
         allowNull: false,
+    },
+    tags:{
+        type: Sequelize.TEXT,
+        allowNull: true,
+    },
+    weight: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+    },
+    width: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+    },
+    height: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+    },
+    length: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+    },
+    reason_failure:{
+        type: Sequelize.TEXT,
+        allowNull: false,
+    },
+    published: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     },
     fake_delete:{
         type: Sequelize.BOOLEAN,

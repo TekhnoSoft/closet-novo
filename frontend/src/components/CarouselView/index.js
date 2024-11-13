@@ -24,7 +24,7 @@ export default ({imageOnly, items}) => {
                   <h1 className="carousel-h1">{item.description}</h1>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
                     <Button>
-                      <b>&nbsp;&nbsp;&nbsp;&nbsp;{item.ctaText}&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                      <b>&nbsp;&nbsp;&nbsp;&nbsp;{item.cta_text}&nbsp;&nbsp;&nbsp;&nbsp;</b>
                     </Button>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { MainContext } from "./helpers/MainContext";
-import { Cart, Home, Product, Search, Menu, Favorite, Register } from "./pages";
+import { Cart, Home, Product, Search, Menu, Favorite, Register, Profile } from "./pages";
 import { BottomTabNavigation, Header } from "./components";
 import { useEffect, useState } from "react";
 import Utils from "./Utils";
@@ -15,7 +15,10 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(false);
 
+  const [favorites, setFavorites] = useState([]);
+  const [homeView, setHomeview] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   const [pageIndex, setPageIndex] = useState(Number(localStorage.getItem("closetnovo_bottomtab_index") || 1));
 
@@ -23,12 +26,20 @@ function App() {
 
   useEffect(() => {
     onCheckHandleAuth();
-    onLoadEssentials();
+    return () => {
+      onLoadEssentials();
+    }
   }, [])
 
   const onLoadEssentials = async () => {
     await Api.general.categories().then(async responseData => {
       setCategories(responseData?.data?.data);
+    })
+    await Api.general.brands().then(async responseData => {
+      setBrands(responseData?.data?.data);
+    })
+    await Api.general.homeviews().then(async views => {
+      setHomeview(views?.data?.data);
     })
   }
 
@@ -41,12 +52,19 @@ function App() {
           setAuthenticated(true);
           setUser(responseUser?.data?.data);
         })
+        onLoadFavorites();
       }
     }).catch(err => {
       setAuthenticated(false);
       setUser(null);
     });
     setLoaded(true);
+  }
+
+  const onLoadFavorites = async (token) => {
+    await Api.user.favotires(token).then(async data => {
+      setFavorites(data?.data?.data)
+    })
   }
 
   const logout = (forceReload) => {
@@ -60,7 +78,7 @@ function App() {
 
   return (
     <Router>
-      <MainContext.Provider value={{ loaded, cart, user, setUser, logout, categories }}>
+      <MainContext.Provider value={{ loaded, homeView, cart, onCheckHandleAuth, user, favorites, onLoadFavorites, setUser, logout, categories, brands }}>
         <Header />
         <ToastContainer style={{ zIndex: 99999999 }} />
         <Routes>
@@ -71,6 +89,7 @@ function App() {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/favorites" element={<Favorite />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         {Utils.mobileCheck() ? (
           <>

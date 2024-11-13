@@ -142,6 +142,23 @@ class Utils {
                 return true;
         }
     }
+    static getClientToken () {
+        return localStorage.getItem("closetnovo_cliente_token");
+    }
+    static formatCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+        if (cpf.length !== 11) return cpf; // Verifica se tem 11 dígitos
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+    static formatCelular(celular) {
+        celular = celular.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+        if (celular.length === 11) {
+            return celular.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+        } else if (celular.length === 10) {
+            return celular.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+        }
+        return celular;
+    }
 }
 
 export default Utils;

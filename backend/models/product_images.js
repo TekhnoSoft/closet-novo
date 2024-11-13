@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const database = require('../database');
+const Product = require('./product');
 
 const ProductImage = database.define('tb_product_images', {
     id: {
@@ -25,7 +26,7 @@ const ProductImage = database.define('tb_product_images', {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-            model: 'tb_product',
+            model: 'tb_products',
             key: 'id'
         }
     },
