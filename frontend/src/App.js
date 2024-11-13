@@ -26,9 +26,7 @@ function App() {
 
   useEffect(() => {
     onCheckHandleAuth();
-    return () => {
-      onLoadEssentials();
-    }
+    onLoadEssentials();
   }, [])
 
   const onLoadEssentials = async () => {
