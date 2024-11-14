@@ -132,11 +132,33 @@ const Api = {
                 return err;
             });
         },
-        myAddresses: async ({forceToken}) => {},
-        deleteMyAddresse: async ({forceToken, id}) => {},
+        myAddresses: async ({forceToken}) => {
+            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+            return await axios.get(`${API_BASE}/users/my-addresses`, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
+        deleteMyAddress: async ({forceToken, id}) => {
+            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+            return await axios.delete(`${API_BASE}/users/delete-my-address/${id}`, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
         addAddress: async ({data, forceToken}) => {
             let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
             return await axios.post(`${API_BASE}/users/address/add`, {data}, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
+        switchAddress: async ({forceToken, id}) => {
+            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/users/switch-address`, {addressId: id}, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;

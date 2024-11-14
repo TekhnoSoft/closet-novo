@@ -261,8 +261,9 @@ router.get('/my-products', validateToken, async (req, res) => {
 router.delete('/delete-my-products/:id', validateToken, async (req, res) => {
     try {
         const id = req.params.id; 
+        const user_id = req.user.id; 
         
-        const product = await Product.findOne({ where: { id } });
+        const product = await Product.findOne({ where: { id, user_id } });
         if (!product) {
             return res.status(200).json({ success: false, code: 404, message: "Produto não encontrado." });
         }

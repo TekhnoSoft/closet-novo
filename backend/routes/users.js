@@ -26,7 +26,7 @@ router.get('/get', validateToken, async (req, res) => {
     try {
         let id = req.user.id;
         const user = await User.findOne({ where: { id } });
-        const addresses = await Address.findAll({where: {user_id: id}});
+        const addresses = await Address.findAll({where: {user_id: id, fake_delete: false}});
         if(!user || user == null){
             return res.status(404).json({ success: false, code: 404, message: "Cliente não encontrado.", data: null });
         }
@@ -174,7 +174,6 @@ router.post('/address/add', validateToken, async (req, res) => {
 
         console.log(req.body.data);
 
-        // Validação básica para os campos obrigatórios
         if (!name || !cep || !logradouro || !numero || !bairro || !cidade || !estado) {
             return res.status(201).json({
                 success: false,
@@ -183,13 +182,11 @@ router.post('/address/add', validateToken, async (req, res) => {
             });
         }
 
-        // Define `selected: false` para todos os endereços existentes do usuário
         await Address.update(
             { selected: false },
             { where: { user_id } }
         );
 
-        // Criação do novo endereço associado ao usuário
         const address = await Address.create({
             name,
             cep,
@@ -217,6 +214,108 @@ router.post('/address/add', validateToken, async (req, res) => {
             message: "Erro ao adicionar o endereço.",
             data: error.message
         });
+    }
+});
+
+router.get('/my-addresses', validateToken, async (req, res) => {
+    try{
+        const id = req.user.id;
+        const addresses = await Address.findAll({where: {user_id: id, fake_delete: false}});
+        return res.status(201).json({
+            success: true,
+            code: 201,
+            message: "Endereços recuperados.",
+            data: addresses
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            message: "Erro ao adicionar o endereço.",
+            data: error.message
+        });
+    }
+})
+
+router.post('/switch-address', validateToken, async (req, res) => {
+    try {
+        const { addressId } = req.body;
+        const user_id = req.user.id;
+
+        await Address.update(
+            { selected: false },
+            { where: { user_id } }
+        );
+
+        const updatedAddress = await Address.update(
+            { selected: true },
+            { where: { id: addressId, user_id } }
+        );
+
+        if (updatedAddress[0] === 0) {
+            return res.status(404).json({
+                success: false,
+                code: 404,
+                message: "Endereço não encontrado ou não pertence ao usuário."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            code: 200,
+            message: "Endereço atualizado com sucesso."
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            message: "Erro ao atualizar o endereço.",
+            data: error.message
+        });
+    }
+});
+
+router.delete('/delete-my-address/:id', validateToken, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user_id = req.user.id;
+        
+        const addressCount = await Address.count({
+            where: {
+                user_id,
+                fake_delete: false
+            }
+        });
+
+        if (addressCount <= 1) {
+            return res.status(200).json({ success: false, code: 400, message: "Você precisa ter ao menos um endereço cadastrado." });
+        }
+
+        const address = await Address.findOne({ where: { id, user_id } });
+        if (!address) {
+            return res.status(200).json({ success: false, code: 404, message: "Endereço não encontrado." });
+        }
+
+        const wasSelected = address.selected;
+
+        await address.update({ fake_delete: true });
+
+        if (wasSelected) {
+            const newSelectedAddress = await Address.findOne({
+                where: {
+                    user_id,
+                    fake_delete: false
+                }
+            });
+
+            if (newSelectedAddress) {
+                await newSelectedAddress.update({ selected: true });
+            }
+        }
+
+        return res.status(200).json({ success: true, code: 200, message: "Endereço excluído com sucesso." });
+    } catch (error) {
+        return res.status(500).json({ success: false, code: 500, message: "Erro ao excluir o endereço.", data: error.message });
     }
 });
 

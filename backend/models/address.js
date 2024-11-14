@@ -51,6 +51,11 @@ const Address = database.define('tb_address', {
         allowNull: false,
         defaultValue: "Brasil"
     },
+    fake_delete:{
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

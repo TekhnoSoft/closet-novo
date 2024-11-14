@@ -29,11 +29,15 @@ const TabContent = ({ tab }) => {
     }
 
     const [formDataAddress, setFormDataAddress] = useState(emptyFormDataAddress);
-
     const [showModalAddress, setShowModalAddress] = useState(false);
+
+    const [addresses, setAddresses] = useState([]);
+    const [showAddressDeleteModal, setShowAddressDeleteModal] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState(null);
 
     useEffect(() => {
         loadMyProducts();
+        loadMyAddresses();
     }, [])
 
     useEffect(() => {
@@ -191,30 +195,69 @@ const TabContent = ({ tab }) => {
     }
 
     const handleRegisterAddressOk = async () => {
-        if(formDataAddress.name.trim()?.length <= 0){
-            Utils.toast({type: "error", text: "Digite o nome do endereço."});
+        if (formDataAddress.name.trim()?.length <= 0) {
+            Utils.toast({ type: "error", text: "Digite o nome do endereço." });
             return;
         }
 
-        if(Utils.validateFormDataRegister({step: 2, formData: formDataAddress})){
+        if (Utils.validateFormDataRegister({ step: 2, formData: formDataAddress })) {
             let token = Utils.getClientToken();
-            await Api.user.addAddress({forceToken: token, data: formDataAddress}).then(async data => {
-                console.log(data);
+            await Api.user.addAddress({ forceToken: token, data: formDataAddress }).then(async data => {
                 Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
                 if (data?.data?.success) {
                     setShowModalAddress(false);
                     setFormDataAddress(emptyFormDataAddress);
                     loadMyAddresses();
                 }
-            })   
+            })
         }
     }
 
     const loadMyAddresses = async () => {
-
+        setAddresses([]);
+        let token = Utils.getClientToken();
+        await Api.user.myAddresses({ forceToken: token }).then(async data => {
+            setAddresses(data?.data?.data);
+        })
     }
 
-    const [checked, setChecked] = useState(false);
+    const handleDeleteAddressCancel = () => {
+        setShowAddressDeleteModal(false);
+    }
+
+    const onCloseModalDeleteAddress = () => {
+        setSelectedAddress(null);
+    }
+
+    const handleDeleteAddressModalShow = (address) => {
+        setSelectedAddress(address);
+        setShowAddressDeleteModal(true);
+    }
+
+    const handleDeleteAddressConfirm = async () => {
+        let token = Utils.getClientToken();
+        await Api.user.deleteMyAddress({ forceToken: token, id: selectedAddress.id }).then(async data => {
+            Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+            if (data?.data?.success) {
+                setSelectedAddress(null);
+                setShowAddressDeleteModal(false);
+                loadMyAddresses();
+            } else {
+                setSelectedAddress(null);
+                setShowAddressDeleteModal(false);
+            }
+        })
+    }
+
+    const handleSelectAddress = async (address) => {
+        let token = Utils.getClientToken();
+        await Api.user.switchAddress({ forceToken: token, id: address?.id }).then(async data => {
+            Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+            if (data?.data?.success) {
+                loadMyAddresses();
+            }
+        })
+    }
 
     switch (tab) {
         case 'Perfil':
@@ -270,9 +313,9 @@ const TabContent = ({ tab }) => {
                     <Modal setShow={setShowModalAddress} show={showModalAddress}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <ion-icon name="location" style={{ color: '#5e8975', marginTop: 0 }}></ion-icon>&nbsp;
-                            <h3 className='h3-account' style={{margin: 0}}>Adicionar Endereço</h3>
+                            <h3 className='h3-account' style={{ margin: 0 }}>Adicionar Endereço</h3>
                         </div>
-                        <SpaceBox space={10}/>
+                        <SpaceBox space={10} />
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <Input hideInputBoxMargin style={{ width: '100%' }} type="text" label="Nome (casa, trabalho)" value={formDataAddress.name} setValue={(value) => handleChangeAddress('name', value)} />&nbsp;&nbsp;
                             <Input hideInputBoxMargin style={{ width: '100%' }} type="cep" label="CEP" value={formDataAddress.cep} setValue={(value) => handleChangeAddress('cep', value)} />
@@ -287,10 +330,18 @@ const TabContent = ({ tab }) => {
                             <Input hideInputBoxMargin style={{ width: '100%' }} type="text" label="Cidade" value={formDataAddress.cidade} setValue={(value) => handleChangeAddress('cidade', value)} />&nbsp;&nbsp;
                             <Input hideInputBoxMargin style={{ width: '100%' }} type="text" label="Estado" value={formDataAddress.estado} setValue={(value) => handleChangeAddress('estado', value)} />
                         </div>
-                        <SpaceBox space={20}/>
-                        <div className="accont-button-group" style={{justifyContent: !Utils?.mobileCheck() ? 'end' : undefined}}>
-                            <Button onClick={handleRegisterAddressCancel} style={{background: "#f5f5f5", color: "#5e8975"}} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;</Button>&nbsp;
+                        <SpaceBox space={20} />
+                        <div className="accont-button-group" style={{ justifyContent: !Utils?.mobileCheck() ? 'end' : undefined }}>
+                            <Button onClick={handleRegisterAddressCancel} style={{ background: "#f5f5f5", color: "#5e8975" }} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;</Button>&nbsp;
                             <Button onClick={handleRegisterAddressOk} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Salvar&nbsp;&nbsp;&nbsp;</Button>
+                        </div>
+                    </Modal>
+                    <Modal setShow={setShowAddressDeleteModal} show={showAddressDeleteModal} onCloseCallback={onCloseModalDeleteAddress}>
+                        <b>Deseja confirmar a remoção do endereço?</b>
+                        <SpaceBox space={10} />
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+                            <Button onClick={handleDeleteAddressCancel} style={{ height: '40px', background: "#f5f5f5", color: "#5e8975" }}>&nbsp;&nbsp;&nbsp;&nbsp;Não&nbsp;&nbsp;&nbsp;</Button>&nbsp;
+                            <Button onClick={handleDeleteAddressConfirm} style={{ height: '40px' }}>&nbsp;&nbsp;&nbsp;Sim&nbsp;&nbsp;&nbsp;</Button>
                         </div>
                     </Modal>
                     <div className="tab-content">
@@ -301,24 +352,35 @@ const TabContent = ({ tab }) => {
                             </button>
                         </div>
                         <div className="address-list">
-                            <div className="address-item" style={{paddingTop: '0px', paddingBottom: '0px'}}>
-                                <div style={{display: 'flex', alignItems: 'center'}}>
-                                    <Radiobox checked={checked} setChecked={setChecked}>&nbsp;&nbsp;
-                                        <div>
-                                            <strong>Endereço 1</strong>
-                                            <p style={{margin: 0, fontSize: '10pt'}}>Rua Exemplo, 123</p>
-                                        </div>
-                                    </Radiobox>
+                            {addresses?.map(address => (
+                                <div className="address-item" style={{ paddingTop: '0px', paddingBottom: '0px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center' }} onClick={() => { handleSelectAddress(address) }}>
+                                        <Radiobox checked={address?.selected == 1} setChecked={() => { return true }}>&nbsp;&nbsp;
+                                            <div>
+                                                <strong>{address?.name}</strong>
+                                                <p style={{
+                                                    margin: 0,
+                                                    fontSize: '8pt',
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis',
+                                                    maxWidth: Utils.mobileCheck() ? '200px' : '100%'
+                                                }}>
+                                                    {address?.city}-{address?.state}, {address?.number}{address?.complement} {address?.neighborhood}, {address?.street}
+                                                </p>
+                                            </div>
+                                        </Radiobox>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <button className="button-profile btn-edit">
+                                            <ion-icon name="pencil"></ion-icon>{Utils.mobileCheck() ? '' : ' Editar'}
+                                        </button>&nbsp;
+                                        <button onClick={() => { handleDeleteAddressModalShow(address) }} className="button-profile btn-remove">
+                                            <ion-icon name="trash"></ion-icon>{Utils.mobileCheck() ? '' : ' Remover'}
+                                        </button>
+                                    </div>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center'}}>
-                                    <button className="button-profile btn-edit">
-                                        <ion-icon name="pencil"></ion-icon>{Utils.mobileCheck() ? '' : ' Editar'}
-                                    </button>&nbsp;
-                                    <button className="button-profile btn-remove">
-                                        <ion-icon name="trash"></ion-icon>{Utils.mobileCheck() ? '' : ' Remover'}
-                                    </button>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                         <SpaceBox space={20} />
                     </div>
