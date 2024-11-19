@@ -31,6 +31,8 @@ const TabContent = ({ tab }) => {
     const [formDataAddress, setFormDataAddress] = useState(emptyFormDataAddress);
     const [showModalAddress, setShowModalAddress] = useState(false);
 
+    const [addressModalMode, setAddressModalMode] = useState("");
+
     const [addresses, setAddresses] = useState([]);
     const [showAddressDeleteModal, setShowAddressDeleteModal] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState(null);
@@ -188,10 +190,12 @@ const TabContent = ({ tab }) => {
 
     const handleShowModalAddress = () => {
         setShowModalAddress(true);
+        setAddressModalMode("CREATE");
     }
 
     const handleRegisterAddressCancel = async () => {
         setShowModalAddress(false);
+        setAddressModalMode("");
     }
 
     const handleRegisterAddressOk = async () => {
@@ -202,14 +206,32 @@ const TabContent = ({ tab }) => {
 
         if (Utils.validateFormDataRegister({ step: 2, formData: formDataAddress })) {
             let token = Utils.getClientToken();
-            await Api.user.addAddress({ forceToken: token, data: formDataAddress }).then(async data => {
-                Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
-                if (data?.data?.success) {
-                    setShowModalAddress(false);
-                    setFormDataAddress(emptyFormDataAddress);
-                    loadMyAddresses();
-                }
-            })
+            switch(addressModalMode){
+                case "CREATE":
+                    await Api.user.addAddress({ forceToken: token, data: formDataAddress }).then(async data => {
+                        Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+                        if (data?.data?.success) {
+                            setShowModalAddress(false);
+                            setFormDataAddress(emptyFormDataAddress);
+                            loadMyAddresses();
+                            setAddressModalMode("");
+                        }
+                    })
+                    break;
+                case "UPDATE":
+                    formDataAddress["id"] = selectedAddress.id;
+                    await Api.user.updateAddress({forceToken: token, data: formDataAddress}).then(async data => {
+                        Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+                        if(data?.data?.success){
+                            setShowModalAddress(false);
+                            setFormDataAddress(emptyFormDataAddress);
+                            loadMyAddresses();
+                            setAddressModalMode("");
+                            setSelectedAddress(null);
+                        }
+                    })
+                    break;
+            }
         }
     }
 
@@ -256,6 +278,22 @@ const TabContent = ({ tab }) => {
             if (data?.data?.success) {
                 loadMyAddresses();
             }
+        })
+    }
+
+    const handleEditAddressModalShow = (address) => {
+        setAddressModalMode("UPDATE");
+        setShowModalAddress(true);
+        setSelectedAddress(address);
+        setFormDataAddress({
+            name: address?.name,
+            cep: address?.cep,
+            logradouro: address?.street,
+            numero: address?.number,
+            complemento: address?.complement,
+            bairro: address?.neighborhood,
+            cidade: address?.city,
+            estado: address?.state
         })
     }
 
@@ -313,7 +351,7 @@ const TabContent = ({ tab }) => {
                     <Modal setShow={setShowModalAddress} show={showModalAddress}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <ion-icon name="location" style={{ color: '#5e8975', marginTop: 0 }}></ion-icon>&nbsp;
-                            <h3 className='h3-account' style={{ margin: 0 }}>Adicionar Endereço</h3>
+                            <h3 className='h3-account' style={{ margin: 0 }}>{addressModalMode == "CREATE" ? "Adicionar" : "Atualizar"} Endereço</h3>
                         </div>
                         <SpaceBox space={10} />
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -372,10 +410,10 @@ const TabContent = ({ tab }) => {
                                         </Radiobox>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <button className="button-profile btn-edit">
+                                        <button onClick={() => {handleEditAddressModalShow(address)}} className="button-profile btn-edit">
                                             <ion-icon name="pencil"></ion-icon>{Utils.mobileCheck() ? '' : ' Editar'}
                                         </button>&nbsp;
-                                        <button onClick={() => { handleDeleteAddressModalShow(address) }} className="button-profile btn-remove">
+                                        <button onClick={() => { handleDeleteAddressModalShow(address)}} className="button-profile btn-remove">
                                             <ion-icon name="trash"></ion-icon>{Utils.mobileCheck() ? '' : ' Remover'}
                                         </button>
                                     </div>

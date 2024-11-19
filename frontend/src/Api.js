@@ -26,29 +26,29 @@ const Api = {
                 return err;
             });
         },
-        calcularFrete: async ({cep, ids_product}) => {
-            return await axios.post(`${API_BASE}/frete/calcular-preco`, {cep, ids_product}).then(async (response) => {
+        calcularFrete: async ({ cep, ids_product }) => {
+            return await axios.post(`${API_BASE}/frete/calcular-preco`, { cep, ids_product }).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        product: async ({id}) => {
+        product: async ({ id }) => {
             return await axios.get(`${API_BASE}/product/get/${id}`).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        productsByCategory: async ({category_id, product_id}) => {
+        productsByCategory: async ({ category_id, product_id }) => {
             return await axios.get(`${API_BASE}/product/find-by-category/${category_id}/${product_id}`).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        productsSearch: async ({data}) => {
-            return await axios.post(`${API_BASE}/product/search`, {data}).then(async (response) => {
+        productsSearch: async ({ data }) => {
+            return await axios.post(`${API_BASE}/product/search`, { data }).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
@@ -70,22 +70,22 @@ const Api = {
                 return err;
             });
         },
-        login: async ({email, password}) => {
-            return await axios.post(`${API_BASE}/users/login`, {email, password}).then(async (response) => {
+        login: async ({ email, password }) => {
+            return await axios.post(`${API_BASE}/users/login`, { email, password }).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        register: async ({data}) => {
-            return await axios.post(`${API_BASE}/users/register`, {data}).then(async (response) => {
+        register: async ({ data }) => {
+            return await axios.post(`${API_BASE}/users/register`, { data }).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
         get: async (forceToken) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
             return await axios.get(`${API_BASE}/users/get`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
@@ -93,72 +93,102 @@ const Api = {
             });
         },
         favotires: async (forceToken) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
             return await axios.get(`${API_BASE}/favorite/get`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        favoriteThis: async ({forceToken, product_id}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
-            return await axios.post(`${API_BASE}/favorite/this`, {product_id}, headers).then(async (response) => {
+        favoriteThis: async ({ forceToken, product_id }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/favorite/this`, { product_id }, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        changePassword: async ({forceToken, oldPassword, newPassword}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
-            return await axios.post(`${API_BASE}/users/change-password`, {oldPassword, newPassword}, headers).then(async (response) => {
+        changePassword: async ({ forceToken, oldPassword, newPassword }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/users/change-password`, { oldPassword, newPassword }, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        myProducts: async ({forceToken}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+        myProducts: async ({ forceToken }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
             return await axios.get(`${API_BASE}/product/my-products`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        deleteMyProduct: async ({forceToken, id}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+        deleteMyProduct: async ({ forceToken, id }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
             return await axios.delete(`${API_BASE}/product/delete-my-products/${id}`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        myAddresses: async ({forceToken}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+        myAddresses: async ({ forceToken }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
             return await axios.get(`${API_BASE}/users/my-addresses`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        deleteMyAddress: async ({forceToken, id}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
+        deleteMyAddress: async ({ forceToken, id }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
             return await axios.delete(`${API_BASE}/users/delete-my-address/${id}`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        addAddress: async ({data, forceToken}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
-            return await axios.post(`${API_BASE}/users/address/add`, {data}, headers).then(async (response) => {
+        addAddress: async ({ forceToken, data }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/users/address/add`, { data }, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;
             });
         },
-        switchAddress: async ({forceToken, id}) => {
-            let headers = (forceToken) ?  {headers:{CLOSETNOVO_CLIENTE_ACCESS_TOKEN : forceToken}} : Environment.HEADERS_CLIENTE;
-            return await axios.post(`${API_BASE}/users/switch-address`, {addressId: id}, headers).then(async (response) => {
+        updateAddress: async ({ forceToken, data }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.put(`${API_BASE}/users/address/update`, { data }, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
+        switchAddress: async ({ forceToken, id }) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/users/switch-address`, { addressId: id }, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
+        uploadFile: async ({ forceToken, file }) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            return await axios.post(`${Environment.API_IMAGES}/files/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'api-key': 'F4692B6D6D44EF8B6AAF3DB6B59C9',
+                    'Origin': 'http://localhost:3000',
+                    'token': forceToken,
+                },
+            }).catch(err => {
+                return err;
+            });
+        },
+        getFile: async ({forceToken, id}) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.get(`${API_BASE}/files/${id}`, headers).then(async (response) => {
                 return await response;
             }).catch(err => {
                 return err;

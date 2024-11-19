@@ -18,7 +18,7 @@ router.post('/upload', authMiddleware, upload.single('file'), async (req, res) =
   }
 });
 
-router.get('/file/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const file = await File.findByPk(req.params.id);
     if (!file) {

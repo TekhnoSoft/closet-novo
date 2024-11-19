@@ -217,6 +217,65 @@ router.post('/address/add', validateToken, async (req, res) => {
     }
 });
 
+router.put('/address/update', validateToken, async (req, res) => {
+    try {
+        const { id, name, cep, logradouro, numero, complemento, bairro, cidade, estado, pais = "Brasil" } = req.body.data;
+        const user_id = req.user.id;
+
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                code: 400,
+                message: "O ID do endereço é obrigatório."
+            });
+        }
+
+        if (!name || !cep || !logradouro || !numero || !bairro || !cidade || !estado) {
+            return res.status(400).json({
+                success: false,
+                code: 400,
+                message: "Todos os campos obrigatórios devem ser preenchidos."
+            });
+        }
+
+        const address = await Address.findOne({ where: { id, user_id } });
+
+        if (!address) {
+            return res.status(404).json({
+                success: false,
+                code: 404,
+                message: "Endereço não encontrado."
+            });
+        }
+
+        const updatedAddress = await address.update({
+            name,
+            cep,
+            street: logradouro,
+            number: numero,
+            complement: complemento,
+            neighborhood: bairro,
+            city: cidade,
+            state: estado,
+            country: pais
+        });
+
+        return res.status(200).json({
+            success: true,
+            code: 200,
+            message: "Endereço atualizado com sucesso.",
+            data: updatedAddress
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            message: "Erro ao atualizar o endereço.",
+            data: error.message
+        });
+    }
+});
+
 router.get('/my-addresses', validateToken, async (req, res) => {
     try{
         const id = req.user.id;
