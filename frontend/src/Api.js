@@ -193,7 +193,10 @@ const Api = {
             }).catch(err => {
                 return err;
             });
-        }
+        },
+        addProduct: async ({forceToken, data}) => {},
+        updateProduct: async ({forceToken, data}) => {},
+        deleteProduct: async ({forceToken, id}) => {},
     },
     admin: {}
 }

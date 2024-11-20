@@ -159,6 +159,9 @@ class Utils {
         }
         return celular;
     }
+    static validateFormDataProduct ({data}) {
+        
+    }
 }
 
 export default Utils;

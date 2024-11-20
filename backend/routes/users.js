@@ -322,7 +322,7 @@ router.post('/switch-address', validateToken, async (req, res) => {
         return res.status(200).json({
             success: true,
             code: 200,
-            message: "Endereço atualizado com sucesso."
+            message: "Endereço principal  atualizado com sucesso."
         });
     } catch (error) {
         return res.status(500).json({

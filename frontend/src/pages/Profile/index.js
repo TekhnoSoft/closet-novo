@@ -13,6 +13,23 @@ const TabContent = ({ tab }) => {
     const [newPassword, setNewPassword] = useState("");
     const [conPassword, setConPassword] = useState("");
 
+    const emptyFormDataProduct = {
+        name: '',
+        description: '',
+        situation: '',
+        tags: '',
+        weight: '',
+        width: '',
+        height: '',
+        length: '',
+        category_id: '',
+        brand_id: '',
+        images: [],
+    }
+
+    const [formDataProduct, setFormDataProduct] = useState(emptyFormDataProduct);
+    const [showModalProduct, setShowModalProduct] = useState(false);
+    const [productModalMode, setProductModalMode] = useState("");
     const [products, setProducts] = useState([]);
     const [showProductDeleteModal, setShowProductDeleteModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -30,12 +47,12 @@ const TabContent = ({ tab }) => {
 
     const [formDataAddress, setFormDataAddress] = useState(emptyFormDataAddress);
     const [showModalAddress, setShowModalAddress] = useState(false);
-
     const [addressModalMode, setAddressModalMode] = useState("");
-
     const [addresses, setAddresses] = useState([]);
     const [showAddressDeleteModal, setShowAddressDeleteModal] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState(null);
+
+    const [checkedProductTerms, setCheckedProductTerms] = useState(true);
 
     useEffect(() => {
         loadMyProducts();
@@ -206,7 +223,7 @@ const TabContent = ({ tab }) => {
 
         if (Utils.validateFormDataRegister({ step: 2, formData: formDataAddress })) {
             let token = Utils.getClientToken();
-            switch(addressModalMode){
+            switch (addressModalMode) {
                 case "CREATE":
                     await Api.user.addAddress({ forceToken: token, data: formDataAddress }).then(async data => {
                         Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
@@ -220,9 +237,9 @@ const TabContent = ({ tab }) => {
                     break;
                 case "UPDATE":
                     formDataAddress["id"] = selectedAddress.id;
-                    await Api.user.updateAddress({forceToken: token, data: formDataAddress}).then(async data => {
+                    await Api.user.updateAddress({ forceToken: token, data: formDataAddress }).then(async data => {
                         Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
-                        if(data?.data?.success){
+                        if (data?.data?.success) {
                             setShowModalAddress(false);
                             setFormDataAddress(emptyFormDataAddress);
                             loadMyAddresses();
@@ -297,6 +314,94 @@ const TabContent = ({ tab }) => {
         })
     }
 
+    const handleShowModalProduct = () => {
+        setShowModalProduct(true);
+        setProductModalMode("CREATE");
+    }
+
+    const handleRegisterProductCancel = () => {
+        setShowModalProduct(false);
+        setProductModalMode("");
+    }
+
+    const handleRegisterProductOk = async () => {
+        if (Utils.validateFormDataProduct({ step: 2, data: formDataProduct })) {
+            let token = Utils.getClientToken();
+            switch (productModalMode) {
+                case "CREATE":
+                    await Api.user.addProduct({ forceToken: token, data: formDataProduct }).then(async data => {
+                        Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+                        if (data?.data?.success) {
+                            setShowModalProduct(false);
+                            setFormDataProduct(emptyFormDataProduct);
+                            loadMyProducts();
+                            setProductModalMode("");
+                        }
+                    })
+                    break;
+                case "UPDATE":
+                    formDataProduct["id"] = selectedProduct.id;
+                    await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(async data => {
+                        Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+                        if (data?.data?.success) {
+                            setShowModalProduct(false);
+                            setFormDataProduct(emptyFormDataProduct);
+                            loadMyProducts();
+                            setProductModalMode("");
+                            setSelectedProduct(null);
+                        }
+                    })
+                    break;
+            }
+        }
+    }
+
+    const handleEditProductModalShow = (product) => {
+        setProductModalMode("UPDATE");
+        setShowModalProduct(true);
+        setSelectedProduct(product);
+        setFormDataProduct({
+            name: product?.name,
+            description: product?.description,
+            situation: product?.situation,
+            tags: product?.tags,
+            weight: product?.weight,
+            width: product?.width,
+            height: product?.height,
+            length: product?.length,
+            category_id: product?.category_id,
+            brand_id: product?.brand_id,
+            images: product?.images.map(image => ({
+                id: image.id,
+                path: image.path,     
+            })),
+        })
+    }
+
+    const handleAddImage = (file) => {
+        if (file) {
+            const newImage = {
+                path: URL.createObjectURL(file),
+                file,
+            };
+            setFormDataProduct((prev) => ({
+                ...prev,
+                images: [...prev.images, newImage],
+            }));
+        }
+    }
+
+    const handleRemoveImage = (index) => {
+        setFormDataProduct((prev) => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index),
+        }));
+    }
+
+    const onCloseModalProduct = () => {
+        setFormDataProduct(emptyFormDataProduct);
+    }
+
     switch (tab) {
         case 'Perfil':
             return (
@@ -353,7 +458,7 @@ const TabContent = ({ tab }) => {
                             <ion-icon name="location" style={{ color: '#5e8975', marginTop: 0 }}></ion-icon>&nbsp;
                             <h3 className='h3-account' style={{ margin: 0 }}>{addressModalMode == "CREATE" ? "Adicionar" : "Atualizar"} Endereço</h3>
                         </div>
-                        <SpaceBox space={10} />
+                        <SpaceBox space={15} />
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <Input hideInputBoxMargin style={{ width: '100%' }} type="text" label="Nome (casa, trabalho)" value={formDataAddress.name} setValue={(value) => handleChangeAddress('name', value)} />&nbsp;&nbsp;
                             <Input hideInputBoxMargin style={{ width: '100%' }} type="cep" label="CEP" value={formDataAddress.cep} setValue={(value) => handleChangeAddress('cep', value)} />
@@ -410,10 +515,10 @@ const TabContent = ({ tab }) => {
                                         </Radiobox>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <button onClick={() => {handleEditAddressModalShow(address)}} className="button-profile btn-edit">
+                                        <button onClick={() => { handleEditAddressModalShow(address) }} className="button-profile btn-edit">
                                             <ion-icon name="pencil"></ion-icon>{Utils.mobileCheck() ? '' : ' Editar'}
                                         </button>&nbsp;
-                                        <button onClick={() => { handleDeleteAddressModalShow(address)}} className="button-profile btn-remove">
+                                        <button onClick={() => { handleDeleteAddressModalShow(address) }} className="button-profile btn-remove">
                                             <ion-icon name="trash"></ion-icon>{Utils.mobileCheck() ? '' : ' Remover'}
                                         </button>
                                     </div>
@@ -427,6 +532,79 @@ const TabContent = ({ tab }) => {
         case 'Produtos':
             return (
                 <>
+                    <Modal childrenPadding={10} setShow={setShowModalProduct} show={showModalProduct} onCloseCallback={onCloseModalProduct}>
+                        <div style={{padding: '10px'}}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <ion-icon name="cube-outline" style={{ color: '#5e8975', marginTop: 0 }}></ion-icon>&nbsp;
+                                <h3 className='h3-account' style={{ margin: 0 }}>{productModalMode == "CREATE" ? "Adicionar" : "Atualizar"} Produto</h3>
+                            </div>
+                            <SpaceBox space={15} />
+
+                            <div style={{width: '100%'}}>
+                                <div style={{ width: '100%', overflowX: 'auto', whiteSpace: 'nowrap', display: 'flex', gap: '10px', padding: '10px 0' }}>
+
+                                    <div style={{ width: '100px', height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px dashed #ccc', cursor: 'pointer' }}>
+                                        <label htmlFor="upload-image" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                                            <ion-icon name="add-outline" style={{ fontSize: '24px', color: '#5e8975' }}></ion-icon>
+                                            <span style={{ fontSize: '10px', color: '#5e8975' }}>(imagem)</span>
+                                        </label>
+                                        <input
+                                            id="upload-image"
+                                            type="file"
+                                            style={{ display: 'none' }}
+                                            accept="image/*"
+                                            onChange={(e) => handleAddImage(e.target.files[0])}
+                                        />
+                                    </div>
+
+                                    {formDataProduct.images.map((image, index) => (
+                                        <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
+                                            <img
+                                                src={image.path || "https://via.placeholder.com/100"}
+                                                alt="Produto"
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                                            />
+                                            <button
+                                                onClick={() => handleRemoveImage(index)}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '5px',
+                                                    right: '5px',
+                                                    background: '#F44336',
+                                                    border: 'none',
+                                                    color: 'white',
+                                                    borderRadius: '50%',
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    fontSize: '14px',
+                                                }}
+                                            >
+                                                &times;
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {productModalMode == "CREATE" ? (
+                                <div style={{ display: 'flex', alignItems: 'start' }}>
+                                    <Checkbox noMargin checked={checkedProductTerms} setChecked={setCheckedProductTerms} />
+                                    <label onClick={() => { setCheckedProductTerms(!checkedProductTerms) }} style={{ fontSize: '8pt' }}>
+                                        Eu, <b>{user?.name}</b> sob cpf: <b>{Utils.formatCPF(user?.cpf)}</b>, declaro que todas as peças por mim fornecidas e/ou disponibilizadas são autênticas e verdadeiras. Desta forma, me responsabilizo perante o Closet Novo e terceiros quanto à veracidade e autenticidade dos itens por mim fornecidos, sob pena de responder por perdas e danos e demais cominações legais aplicáveis.
+                                    </label>
+                                </div>
+                            ) : (null)}
+                            <SpaceBox space={20} />
+                            <div className="accont-button-group" style={{ justifyContent: !Utils?.mobileCheck() ? 'end' : undefined }}>
+                                <Button onClick={handleRegisterProductCancel} style={{ background: "#f5f5f5", color: "#5e8975" }} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;</Button>&nbsp;
+                                <Button onClick={handleRegisterProductOk} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Salvar&nbsp;&nbsp;&nbsp;</Button>
+                            </div>
+                        </div>
+                    </Modal >
                     <Modal setShow={setShowProductDeleteModal} show={showProductDeleteModal} onCloseCallback={onCloseModalDeleteProduct}>
                         <b>Deseja confirmar a remoção do produto?</b>
                         <SpaceBox space={10} />
@@ -438,7 +616,7 @@ const TabContent = ({ tab }) => {
                     <div className="tab-content">
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <h3>Meus Produtos</h3>
-                            <button className="button-profile btn-new-address">
+                            <button className="button-profile btn-new-address" onClick={handleShowModalProduct}>
                                 <ion-icon name="add-circle-outline"></ion-icon><span>Novo Produto</span>
                             </button>
                         </div>
@@ -473,7 +651,7 @@ const TabContent = ({ tab }) => {
                                         {product?.status != "A" ? (
                                             <>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <button className="button-profile btn-edit">
+                                                <button onClick={() => { handleEditProductModalShow(product) }} className="button-profile btn-edit">
                                                     <ion-icon name="pencil"></ion-icon>{Utils.mobileCheck() ? '' : ' Editar'}
                                                 </button>&nbsp;
                                                 <button onClick={() => { handleDeleteProductModalShow(product) }} className="button-profile btn-remove">
