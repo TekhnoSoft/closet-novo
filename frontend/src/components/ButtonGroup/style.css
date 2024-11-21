@@ -1,0 +1,10 @@
+.period-button{
+    background: #f5f5f5;
+    color: #5e8975;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+  }

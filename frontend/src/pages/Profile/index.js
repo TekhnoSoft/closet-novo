@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './style.css';
-import { AccountModal, Button, Checkbox, Container, FragmentView, Input, Modal, Radiobox, Ship, SpaceBox } from '../../components';  // Ajuste o caminho conforme necessário
+import { AccountModal, Button, ButtonGroup, Checkbox, Container, FragmentView, Input, Modal, Option, Radiobox, Select, Ship, SpaceBox } from '../../components';  // Ajuste o caminho conforme necessário
 import Utils from '../../Utils';
 import { MainContext } from '../../helpers/MainContext';
 import Api from '../../Api';
 
 const TabContent = ({ tab }) => {
 
-    const { user, logout } = useContext(MainContext);
+    const { user, categories, brands, logout } = useContext(MainContext);
 
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -24,10 +24,17 @@ const TabContent = ({ tab }) => {
         length: '',
         category_id: '',
         brand_id: '',
+        address_id: '',
         images: [],
     }
 
+    const emptyFormDataSpecificProduct = {
+        description: '',
+        address_id: '',
+    }
+
     const [formDataProduct, setFormDataProduct] = useState(emptyFormDataProduct);
+    const [formDataSpecificProduct, setFormDataSpecificProduct] = useState(emptyFormDataSpecificProduct);
     const [showModalProduct, setShowModalProduct] = useState(false);
     const [productModalMode, setProductModalMode] = useState("");
     const [products, setProducts] = useState([]);
@@ -53,6 +60,12 @@ const TabContent = ({ tab }) => {
     const [selectedAddress, setSelectedAddress] = useState(null);
 
     const [checkedProductTerms, setCheckedProductTerms] = useState(true);
+
+    const [productTypeIndex, setProductTypeIndex] = useState(0);
+    const [productType, setProductType] = useState([
+        { index: 0, label: "Específico" },
+        { index: 1, label: "Não Específico" },
+    ]);
 
     useEffect(() => {
         loadMyProducts();
@@ -373,7 +386,7 @@ const TabContent = ({ tab }) => {
             brand_id: product?.brand_id,
             images: product?.images.map(image => ({
                 id: image.id,
-                path: image.path,     
+                path: image.path,
             })),
         })
     }
@@ -400,6 +413,12 @@ const TabContent = ({ tab }) => {
 
     const onCloseModalProduct = () => {
         setFormDataProduct(emptyFormDataProduct);
+    }
+
+    const onChangeProductType = (type) => {
+        setFormDataProduct(emptyFormDataProduct);
+        setFormDataSpecificProduct(emptyFormDataSpecificProduct);
+        setProductTypeIndex(type.index);
     }
 
     switch (tab) {
@@ -533,71 +552,185 @@ const TabContent = ({ tab }) => {
             return (
                 <>
                     <Modal childrenPadding={10} setShow={setShowModalProduct} show={showModalProduct} onCloseCallback={onCloseModalProduct}>
-                        <div style={{padding: '10px'}}>
+                        <div style={{ padding: '10px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <ion-icon name="cube-outline" style={{ color: '#5e8975', marginTop: 0 }}></ion-icon>&nbsp;
                                 <h3 className='h3-account' style={{ margin: 0 }}>{productModalMode == "CREATE" ? "Adicionar" : "Atualizar"} Produto</h3>
                             </div>
                             <SpaceBox space={15} />
 
-                            <div style={{width: '100%'}}>
-                                <div style={{ width: '100%', overflowX: 'auto', whiteSpace: 'nowrap', display: 'flex', gap: '10px', padding: '10px 0' }}>
+                            <div style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: '500px' }}>
 
-                                    <div style={{ width: '100px', height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px dashed #ccc', cursor: 'pointer' }}>
-                                        <label htmlFor="upload-image" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-                                            <ion-icon name="add-outline" style={{ fontSize: '24px', color: '#5e8975' }}></ion-icon>
-                                            <span style={{ fontSize: '10px', color: '#5e8975' }}>(imagem)</span>
-                                        </label>
-                                        <input
-                                            id="upload-image"
-                                            type="file"
-                                            style={{ display: 'none' }}
-                                            accept="image/*"
-                                            onChange={(e) => handleAddImage(e.target.files[0])}
-                                        />
-                                    </div>
+                                {productModalMode == "CREATE" ? (
+                                    <ButtonGroup activeIndex={productTypeIndex} onChange={onChangeProductType} items={productType} />
+                                ) : (null)}
 
-                                    {formDataProduct.images.map((image, index) => (
-                                        <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
-                                            <img
-                                                src={image.path || "https://via.placeholder.com/100"}
-                                                alt="Produto"
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                                            />
-                                            <button
-                                                onClick={() => handleRemoveImage(index)}
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '5px',
-                                                    right: '5px',
-                                                    background: '#F44336',
-                                                    border: 'none',
-                                                    color: 'white',
-                                                    borderRadius: '50%',
-                                                    width: '20px',
-                                                    height: '20px',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    fontSize: '14px',
-                                                }}
-                                            >
-                                                &times;
-                                            </button>
+                                {productTypeIndex == 0 ? (
+                                    <>
+                                        <div style={{ width: '100%' }}>
+                                            <div style={{ width: '100%', overflowX: 'auto', whiteSpace: 'nowrap', display: 'flex', gap: '10px', padding: '10px 0' }}>
+
+                                                <div style={{ width: '100px', height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px dashed #ccc', cursor: 'pointer' }}>
+                                                    <label htmlFor="upload-image" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                                                        <ion-icon name="add-outline" style={{ fontSize: '24px', color: '#5e8975' }}></ion-icon>
+                                                        <span style={{ fontSize: '10px', color: '#5e8975' }}>(imagem)</span>
+                                                    </label>
+                                                    <input
+                                                        id="upload-image"
+                                                        type="file"
+                                                        style={{ display: 'none' }}
+                                                        accept="image/*"
+                                                        onChange={(e) => handleAddImage(e.target.files[0])}
+                                                    />
+                                                </div>
+
+                                                {formDataProduct.images.map((image, index) => (
+                                                    <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
+                                                        <img
+                                                            src={image.path || "https://via.placeholder.com/100"}
+                                                            alt="Produto"
+                                                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                                                        />
+                                                        <button
+                                                            onClick={() => handleRemoveImage(index)}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: '5px',
+                                                                right: '5px',
+                                                                background: '#F44336',
+                                                                border: 'none',
+                                                                color: 'white',
+                                                                borderRadius: '50%',
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                cursor: 'pointer',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                fontSize: '14px',
+                                                            }}
+                                                        >
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
+
+                                        <Input
+                                            label="Nome do Produto"
+                                            value={formDataProduct.name}
+                                            setValue={(value) => setFormDataProduct({ ...formDataProduct, name: value })}
+                                            style={{ width: '100%' }}
+                                        />
+                                        <Input
+                                            label={productModalMode == "CREATE" ? "Descrição" : ""}
+                                            value={formDataProduct.description}
+                                            setValue={(value) => setFormDataProduct({ ...formDataProduct, description: value })}
+                                            type="textarea"
+                                            style={{ width: '100%' }}
+                                            hideInputBoxMargin
+                                        />
+
+                                        <SpaceBox space={1.5} />
+
+                                        <Select label={"Situação"} hideInputBoxMargin value={formDataProduct.situation} setValue={(value) => setFormDataProduct({ ...formDataProduct, situation: value })}>
+                                            <Option value={"N"}>Novo</Option>
+                                            <Option value={"U"}>Usado</Option>
+                                        </Select>
+
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <Select label={"Categoria"} width={"100%"} value={formDataProduct.category_id} setValue={(value) => setFormDataProduct({ ...formDataProduct, category_id: value })}>
+                                                <Option value={""}>(Selecione)</Option>
+                                                {categories?.map(c => (
+                                                    <Option value={c?.id}>{c?.name}</Option>
+                                                ))}
+                                            </Select>
+                                            <Select label={"Marca"} width={"100%"} value={formDataProduct.brand_id} setValue={(value) => setFormDataProduct({ ...formDataProduct, brand_id: value })}>
+                                                <Option value={""}>(Selecione)</Option>
+                                                {brands?.map(b => (
+                                                    <Option value={b?.id}>{b?.name}</Option>
+                                                ))}
+                                            </Select>
+                                        </div>
+
+                                        {/* Dimensões */}
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <Input
+                                                label="Peso (kg)"
+                                                type="number"
+                                                value={formDataProduct.weight}
+                                                setValue={(value) => setFormDataProduct({ ...formDataProduct, weight: value })}
+                                                style={{ width: '100%' }}
+                                                hideInputBoxMargin
+
+                                            />
+                                            <Input
+                                                label="Largura (cm)"
+                                                type="number"
+                                                value={formDataProduct.width}
+                                                setValue={(value) => setFormDataProduct({ ...formDataProduct, width: value })}
+                                                style={{ width: '100%' }}
+                                                hideInputBoxMargin
+
+                                            />
+                                        </div>
+
+                                        <SpaceBox space={10} />
+
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <Input
+                                                label="Altura (cm)"
+                                                type="number"
+                                                value={formDataProduct.height}
+                                                setValue={(value) => setFormDataProduct({ ...formDataProduct, height: value })}
+                                                style={{ width: '100%' }}
+                                                hideInputBoxMargin
+                                            />
+                                            <Input
+                                                label="Comprimento (cm)"
+                                                type="number"
+                                                value={formDataProduct.length}
+                                                setValue={(value) => setFormDataProduct({ ...formDataProduct, length: value })}
+                                                style={{ width: '100%' }}
+                                                hideInputBoxMargin
+                                            />
+                                        </div>
+
+                                        <Input
+                                            label="Tags (separadas por vírgula)"
+                                            value={formDataProduct.tags}
+                                            setValue={(value) => setFormDataProduct({ ...formDataProduct, tags: value })}
+                                            style={{ width: '100%' }}
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Input
+                                            label={formDataSpecificProduct.description.trim().length <= 0 ? "Descreva os itens que irá vender" : ""}
+                                            value={formDataSpecificProduct.description}
+                                            setValue={(value) => setFormDataSpecificProduct({ ...formDataSpecificProduct, description: value })}
+                                            type="textarea"
+                                            style={{ width: '100%' }}
+                                            hideInputBoxMargin
+                                        />
+                                    </>
+                                )}
+
+                                {productModalMode == "CREATE" ? (
+                                    <>
+                                        <SpaceBox space={15} />
+                                        <div style={{ display: 'flex', alignItems: 'start' }}>
+                                            <Checkbox noMargin checked={checkedProductTerms} setChecked={setCheckedProductTerms} />
+                                            <label onClick={() => { setCheckedProductTerms(!checkedProductTerms) }} style={{ fontSize: '8pt' }}>
+                                                Eu, <b>{user?.name}</b> sob o CPF: <b>{Utils.formatCPF(user?.cpf)}</b>, declaro que todas as peças por mim fornecidas e/ou disponibilizadas são autênticas e verdadeiras. Desta forma, me responsabilizo perante o Closet Novo e terceiros quanto à veracidade e autenticidade dos itens por mim fornecidos, sob pena de responder por perdas e danos e demais cominações legais aplicáveis.
+                                            </label>
+                                        </div>
+                                    </>
+                                ) : (null)}
+
                             </div>
 
-                            {productModalMode == "CREATE" ? (
-                                <div style={{ display: 'flex', alignItems: 'start' }}>
-                                    <Checkbox noMargin checked={checkedProductTerms} setChecked={setCheckedProductTerms} />
-                                    <label onClick={() => { setCheckedProductTerms(!checkedProductTerms) }} style={{ fontSize: '8pt' }}>
-                                        Eu, <b>{user?.name}</b> sob cpf: <b>{Utils.formatCPF(user?.cpf)}</b>, declaro que todas as peças por mim fornecidas e/ou disponibilizadas são autênticas e verdadeiras. Desta forma, me responsabilizo perante o Closet Novo e terceiros quanto à veracidade e autenticidade dos itens por mim fornecidos, sob pena de responder por perdas e danos e demais cominações legais aplicáveis.
-                                    </label>
-                                </div>
-                            ) : (null)}
                             <SpaceBox space={20} />
                             <div className="accont-button-group" style={{ justifyContent: !Utils?.mobileCheck() ? 'end' : undefined }}>
                                 <Button onClick={handleRegisterProductCancel} style={{ background: "#f5f5f5", color: "#5e8975" }} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;</Button>&nbsp;
