@@ -68,6 +68,10 @@ const Product = database.define('tb_products', {
         allowNull: false,
         defaultValue: false
     },
+    address_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
     fake_delete:{
         type: Sequelize.BOOLEAN,
         allowNull: false,

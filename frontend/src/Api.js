@@ -197,6 +197,7 @@ const Api = {
         addProduct: async ({forceToken, data}) => {},
         updateProduct: async ({forceToken, data}) => {},
         deleteProduct: async ({forceToken, id}) => {},
+        addSpecificProduct: async ({forceToken, data}) => {},
     },
     admin: {}
 }

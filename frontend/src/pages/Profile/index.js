@@ -329,6 +329,7 @@ const TabContent = ({ tab }) => {
 
     const handleShowModalProduct = () => {
         setShowModalProduct(true);
+        setCheckedProductTerms(true);
         setProductModalMode("CREATE");
     }
 
@@ -338,34 +339,57 @@ const TabContent = ({ tab }) => {
     }
 
     const handleRegisterProductOk = async () => {
-        if (Utils.validateFormDataProduct({ step: 2, data: formDataProduct })) {
-            let token = Utils.getClientToken();
-            switch (productModalMode) {
-                case "CREATE":
-                    await Api.user.addProduct({ forceToken: token, data: formDataProduct }).then(async data => {
+        switch (productTypeIndex) {
+            case 0:
+                if (Utils.validateFormDataProduct({ data: formDataProduct })) {
+                    let token = Utils.getClientToken();
+                    switch (productModalMode) {
+                        case "CREATE":
+                            await Api.user.addProduct({ forceToken: token, data: formDataProduct }).then(async data => {
+                                Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+                                if (data?.data?.success) {
+                                    setShowModalProduct(false);
+                                    setFormDataProduct(emptyFormDataProduct);
+                                    loadMyProducts();
+                                    setProductModalMode("");
+                                    onCloseModalProduct();
+                                }
+                            })
+                            break;
+                        case "UPDATE":
+                            formDataProduct["id"] = selectedProduct.id;
+                            await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(async data => {
+                                Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
+                                if (data?.data?.success) {
+                                    setShowModalProduct(false);
+                                    setFormDataProduct(emptyFormDataProduct);
+                                    loadMyProducts();
+                                    setProductModalMode("");
+                                    setSelectedProduct(null);
+                                    onCloseModalProduct();
+                                }
+                            })
+                            break;
+                    }
+                }
+                break;
+            case 1:
+                if (Utils.validateFormDataSpecificProduct({ data: formDataSpecificProduct })) {
+                    let token = Utils.getClientToken();
+                    await Api.user.addSpecificProduct({ forceToken: token, data: formDataSpecificProduct }).then(async data => {
                         Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
                         if (data?.data?.success) {
                             setShowModalProduct(false);
-                            setFormDataProduct(emptyFormDataProduct);
-                            loadMyProducts();
-                            setProductModalMode("");
-                        }
-                    })
-                    break;
-                case "UPDATE":
-                    formDataProduct["id"] = selectedProduct.id;
-                    await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(async data => {
-                        Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
-                        if (data?.data?.success) {
-                            setShowModalProduct(false);
+                            setFormDataSpecificProduct(emptyFormDataSpecificProduct);
                             setFormDataProduct(emptyFormDataProduct);
                             loadMyProducts();
                             setProductModalMode("");
                             setSelectedProduct(null);
+                            onCloseModalProduct();
                         }
                     })
-                    break;
-            }
+                }
+                break;
         }
     }
 
@@ -384,6 +408,7 @@ const TabContent = ({ tab }) => {
             length: product?.length,
             category_id: product?.category_id,
             brand_id: product?.brand_id,
+            address_id: product?.address_id,
             images: product?.images.map(image => ({
                 id: image.id,
                 path: image.path,
@@ -413,6 +438,8 @@ const TabContent = ({ tab }) => {
 
     const onCloseModalProduct = () => {
         setFormDataProduct(emptyFormDataProduct);
+        setFormDataSpecificProduct(emptyFormDataSpecificProduct);
+        setProductTypeIndex(0);
     }
 
     const onChangeProductType = (type) => {
@@ -703,6 +730,15 @@ const TabContent = ({ tab }) => {
                                             setValue={(value) => setFormDataProduct({ ...formDataProduct, tags: value })}
                                             style={{ width: '100%' }}
                                         />
+
+                                        <Select hideInputBoxMargin label={"Endereço de retirada"} value={formDataProduct.address_id} setValue={(value) => setFormDataProduct({ ...formDataProduct, address_id: value })}>
+                                            <Option value={null}>(Selecione)</Option>
+                                            <Option value={0}>Entrega no Closet Novo</Option>
+                                            {addresses?.map(address => (
+                                                <Option value={address.id}>{address?.name}, {address?.number}{address?.complement} {address?.neighborhood}, {address?.street}</Option>
+                                            ))}
+                                        </Select>
+
                                     </>
                                 ) : (
                                     <>
@@ -714,6 +750,14 @@ const TabContent = ({ tab }) => {
                                             style={{ width: '100%' }}
                                             hideInputBoxMargin
                                         />
+
+                                        <Select hideInputBoxMargin label={"Endereço de retirada"} value={formDataSpecificProduct.address_id} setValue={(value) => setFormDataSpecificProduct({ ...formDataSpecificProduct, address_id: value })}>
+                                            <Option value={null}>(Selecione)</Option>
+                                            <Option value={0}>Entrega no Closet Novo</Option>
+                                            {addresses?.map(address => (
+                                                <Option value={address.id}>{address?.name}, {address?.number}{address?.complement} {address?.neighborhood}, {address?.street}</Option>
+                                            ))}
+                                        </Select>
                                     </>
                                 )}
 

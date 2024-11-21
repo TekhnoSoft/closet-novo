@@ -162,6 +162,9 @@ class Utils {
     static validateFormDataProduct ({data}) {
         
     }
+    static validateFormDataSpecificProduct ({data}) {
+
+    }
 }
 
 export default Utils;
