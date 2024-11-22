@@ -104,7 +104,6 @@ router.post('/add', validateToken, async (req, res) => {
 
         return res.status(200).json({ success: true, code: 200, message: "Produto salvo." });
     } catch (error) {
-        console.error(error);
         await transaction.rollback();
         return res.status(500).json({ message: 'Internal server error' });
     }
@@ -113,11 +112,13 @@ router.post('/add', validateToken, async (req, res) => {
 router.put('/update', validateToken, async (req, res) => {
     const { id, name, description, situation, tags, weight, width, height, length, category_id, brand_id, address_id, images } = req.body.data;
 
+    const transaction = await sequelize.transaction();
+
     try {
         const product = await Product.findByPk(id);
 
         if (!product) {
-            return res.status(200).json({ success: false, code: 400, message: "Produto não pode atualizado." });
+            return res.status(400).json({ success: false, code: 400, message: "Produto não pode ser atualizado." });
         }
 
         product.name = name || product.name;
@@ -132,11 +133,47 @@ router.put('/update', validateToken, async (req, res) => {
         product.brand_id = brand_id || product.brand_id;
         product.address_id = address_id || product.address_id;
 
-        await product.save();
+        if (images && images.length > 0) {
+            const existingImages = await ProductImage.findAll({
+                where: { product_id: product.id },
+                transaction
+            });
 
-        return res.status(200).json({ success: true, code: 200, message: "Produto salvo." });
+            const existingImageIds = existingImages.map(image => image.id);
+
+            const newImages = images.filter(image => image.temporaly_id).map(image => ({
+                path: image.path,
+                extention: image?.extention || "png", 
+                product_id: product.id
+            }));
+
+            if (newImages.length > 0) {
+                await ProductImage.bulkCreate(newImages, { transaction });
+            }
+
+            const imagesToDelete = existingImages.filter(image => {
+                return !images.some(newImage => newImage.id === image.id);
+            });
+
+            if (imagesToDelete.length > 0) {
+                await ProductImage.destroy({
+                    where: {
+                        id: {
+                            [Op.in]: imagesToDelete.map(image => image.id)
+                        }
+                    },
+                    transaction
+                });
+            }
+        }
+
+        await product.save({ transaction });
+
+        await transaction.commit();
+
+        return res.status(200).json({ success: true, code: 200, message: "Produto atualizado com sucesso." });
     } catch (error) {
-        console.error(error);
+        await transaction.rollback();
         return res.status(500).json({ message: 'Internal server error' });
     }
 });

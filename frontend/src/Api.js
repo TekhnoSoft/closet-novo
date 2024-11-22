@@ -203,6 +203,7 @@ const Api = {
         },
         updateProduct: async ({forceToken, data}) => {
             let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            console.log(data)
             return await axios.put(`${API_BASE}/product/update`, { data }, headers).then(async (response) => {
                 return await response;
             }).catch(err => {

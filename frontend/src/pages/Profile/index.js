@@ -35,7 +35,7 @@ const TabContent = ({ tab }) => {
         description: '',
         address_id: '',
     }
-    
+
     const [formDataProduct, setFormDataProduct] = useState(emptyFormDataProduct);
     const [formDataSpecificProduct, setFormDataSpecificProduct] = useState(emptyFormDataSpecificProduct);
     const [showModalProduct, setShowModalProduct] = useState(false);
@@ -381,6 +381,22 @@ const TabContent = ({ tab }) => {
                             break;
                         case "UPDATE":
                             formDataProduct["id"] = selectedProduct.id;
+                            let images_objects_updates = [];
+                            for (const image of formDataProduct?.images || []) {
+                                if (image.temporaly_id) {
+                                    try {
+                                        const data = await Api.user.uploadFile({ file: image.file, token: token });
+                                        images_objects_updates.push({
+                                            temporaly_id: image.temporaly_id,
+                                            path: `${Environment.API_IMAGES}/files/${data?.data?.file?.id}`,
+                                            extention: Utils.getExtension(image.file.name),
+                                        });
+                                    } catch (err) {
+                                        console.log(err);
+                                    }
+                                }
+                            }
+                            formDataProduct.images.concat(images_objects_updates);
                             await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(async data => {
                                 Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
                                 if (data?.data?.success) {
@@ -389,7 +405,7 @@ const TabContent = ({ tab }) => {
                             })
                             break;
                     }
-                }else{
+                } else {
                     setDisableButtonAddProduct(false);
                 }
                 break;
@@ -402,7 +418,7 @@ const TabContent = ({ tab }) => {
                             resetAllModalProduct();
                         }
                     })
-                }else{
+                } else {
                     setDisableButtonAddProduct(false);
                 }
                 break;
@@ -650,7 +666,7 @@ const TabContent = ({ tab }) => {
                                                 {formDataProduct.images.map((image, index) => (
                                                     <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
                                                         <img
-                                                            src={image.path || "https://via.placeholder.com/100"}
+                                                            src={image?.path || "https://via.placeholder.com/100"}
                                                             alt="Produto"
                                                             style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
                                                         />
@@ -838,7 +854,12 @@ const TabContent = ({ tab }) => {
                             {products?.map(product => (
                                 <div className="product-item-p" style={{ borderLeft: getBorderByStatus(product?.status) }}>
                                     <div className="product-image-container">
-                                        <img src={product?.images[0].path || "https://via.placeholder.com/100"} alt="Produto" className="product-image" />&nbsp;&nbsp;
+                                        {product?.images?.length > 0 ? (
+                                            <img src={product?.images[0].path} alt="Produto" className="product-image" />
+                                        ) : (
+                                            <img src={"https://via.placeholder.com/100"} alt="Produto" className="product-image" />
+                                        )}
+                                        &nbsp;&nbsp;
                                         <div>
                                             {Utils?.mobileCheck() ? (
                                                 <>
