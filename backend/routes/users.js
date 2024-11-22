@@ -62,7 +62,6 @@ router.post('/login', validateOrigin, async (req, res) => {
 
         return res.status(200).json({ success: true, code: 200, message: "Login realizado com sucesso.", token });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ success: false, code: 500, message: "Erro no servidor. Tente novamente mais tarde." });
     }
 })
@@ -171,8 +170,6 @@ router.post('/address/add', validateToken, async (req, res) => {
     try {
         const { name, cep, logradouro, numero, complemento, bairro, cidade, estado, pais = "Brasil" } = req.body.data;
         const user_id = req.user.id;
-
-        console.log(req.body.data);
 
         if (!name || !cep || !logradouro || !numero || !bairro || !cidade || !estado) {
             return res.status(201).json({

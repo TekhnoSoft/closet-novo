@@ -32,7 +32,6 @@ router.get('/:id', async (req, res) => {
     }
     res.sendFile(path.resolve(file.path));
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: 'Error retrieving file', error });
   }
 });

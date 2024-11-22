@@ -367,9 +367,7 @@ const TabContent = ({ tab }) => {
                                         path: `${Environment.API_IMAGES}/files/${data?.data?.file?.id}`,
                                         extention: Utils.getExtension(image.file.name),
                                     });
-                                } catch (err) {
-                                    console.log(err);
-                                }
+                                } catch (err) {}
                             }
                             formDataProduct["images"] = images_objects;
                             await Api.user.addProduct({ forceToken: token, data: formDataProduct }).then(async data => {
