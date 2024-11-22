@@ -142,7 +142,7 @@ class Utils {
                 return true;
         }
     }
-    static getClientToken () {
+    static getClientToken() {
         return localStorage.getItem("closetnovo_cliente_token");
     }
     static formatCPF(cpf) {
@@ -159,11 +159,115 @@ class Utils {
         }
         return celular;
     }
-    static validateFormDataProduct ({data}) {
-        
-    }
-    static validateFormDataSpecificProduct ({data}) {
+    static validateFormDataProduct({ data, mode }) {
+        try {
+            const safeTrim = (value) => {
+                if (typeof value === 'string') {
+                    return value.trim();
+                }
+                return value;
+            }
 
+            if (!data.name || safeTrim(data.name).length <= 0) {
+                Utils.toast({ type: "error", text: "Digite o nome do produto." });
+                return false;
+            }
+
+            if (!data.description || safeTrim(data.description).length <= 0) {
+                Utils.toast({ type: "error", text: "Digite a descrição do produto." });
+                return false;
+            }
+
+            if (!data.situation || safeTrim(data.situation).length <= 0) {
+                Utils.toast({ type: "error", text: "Informe a situação do produto." });
+                return false;
+            }
+
+            if (!data.category_id || safeTrim(data.category_id).length <= 0) {
+                Utils.toast({ type: "error", text: "Selecione a categoria do produto." });
+                return false;
+            }
+
+            if (!data.brand_id || safeTrim(data.brand_id).length <= 0) {
+                Utils.toast({ type: "error", text: "Selecione a marca do produto." });
+                return false;
+            }
+
+            if (!data.weight || safeTrim(data.weight).length <= 0) {
+                Utils.toast({ type: "error", text: "Informe o peso do produto." });
+                return false;
+            }
+
+            if (!data.width || safeTrim(data.width).length <= 0) {
+                Utils.toast({ type: "error", text: "Informe a largura do produto." });
+                return false;
+            }
+
+            if (!data.height || safeTrim(data.height).length <= 0) {
+                Utils.toast({ type: "error", text: "Informe a altura do produto." });
+                return false;
+            }
+
+            if (!data.length || safeTrim(data.length).length <= 0) {
+                Utils.toast({ type: "error", text: "Informe o comprimento do produto." });
+                return false;
+            }
+
+            if (!data.tags || safeTrim(data.tags).length <= 0) {
+                Utils.toast({ type: "error", text: "Adicione ao menos uma tag ao produto." });
+                return false;
+            }
+
+            if (!data.address_id < 0) {
+                Utils.toast({ type: "error", text: "Selecione o endereço do produto." });
+                return false;
+            }else if (data?.address_id == '-1'){
+                Utils.toast({ type: "error", text: "Selecione o endereço do produto." });
+                return false;
+            }
+
+            if (!Array.isArray(data.images) || data.images.length === 0) {
+                Utils.toast({ type: "error", text: "Adicione ao menos uma imagem ao produto." });
+                return false;
+            }
+
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    static validateFormDataSpecificProduct({ data }) {
+        if (data.description.trim().length <= 0) {
+            Utils.toast({ type: "error", text: "Digite a descrição do produto." });
+            return false;
+        }
+
+        if (data.address_id.trim().length <= 0) {
+            Utils.toast({ type: "error", text: "Selecione o endereço do produto." });
+            return false;
+        }
+
+        return true;
+    }
+    static makeid(length = 50) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const charactersLength = characters.length;
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+    static getExtension(filename) {
+        if (!filename || typeof filename !== 'string') {
+            return null; // Return null for invalid input
+        }
+        const dotIndex = filename.lastIndexOf('.');
+        if (dotIndex === -1 || dotIndex === 0) {
+            return ''; // No extension or filename starts with a dot
+        }
+        return filename.slice(dotIndex + 1);
     }
 }
 

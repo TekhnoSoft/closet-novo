@@ -179,7 +179,6 @@ const Api = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'api-key': 'F4692B6D6D44EF8B6AAF3DB6B59C9',
-                    'Origin': 'http://localhost:3000',
                     'token': forceToken,
                 },
             }).catch(err => {
@@ -194,10 +193,30 @@ const Api = {
                 return err;
             });
         },
-        addProduct: async ({forceToken, data}) => {},
-        updateProduct: async ({forceToken, data}) => {},
-        deleteProduct: async ({forceToken, id}) => {},
-        addSpecificProduct: async ({forceToken, data}) => {},
+        addProduct: async ({forceToken, data}) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/product/add`, { data }, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
+        updateProduct: async ({forceToken, data}) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.put(`${API_BASE}/product/update`, { data }, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
+        addSpecificProduct: async ({forceToken, data}) => {
+            let headers = (forceToken) ? { headers: { CLOSETNOVO_CLIENTE_ACCESS_TOKEN: forceToken } } : Environment.HEADERS_CLIENTE;
+            return await axios.post(`${API_BASE}/product/specific-product/add`, { data }, headers).then(async (response) => {
+                return await response;
+            }).catch(err => {
+                return err;
+            });
+        },
     },
     admin: {}
 }

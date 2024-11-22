@@ -4,6 +4,8 @@ const router = express.Router();
 const { validateOrigin } = require('../middlewares/CorsMiddleware');
 const { validateToken } = require('../middlewares/AuthMiddleware');
 
+const Utils = require("../utils");
+
 require('dotenv').config();
 
 const { Op, Sequelize } = require('sequelize');
@@ -12,10 +14,12 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 const Brand = require('../models/brand');
 const ProductImage = require('../models/product_images');
+const SpecificProduct = require('../models/specific_product');
+const sequelize = require('../database');
 
 router.get('/get/:id', validateOrigin, async (req, res) => {
     const { id } = req.params;
-    
+
     try {
         const product = await Product.findOne({
             where: {
@@ -42,24 +46,37 @@ router.get('/get/:id', validateOrigin, async (req, res) => {
     }
 });
 
-router.post('/create', validateOrigin, async (req, res) => {
-    const { name, ref, description, situation, price, other_price, status, tags, weight, width, height, length, category_id, brand_id, user_id } = req.body;
+router.post('/add', validateToken, async (req, res) => {
+    const {
+        name,
+        description,
+        situation,
+        tags,
+        weight,
+        width,
+        height,
+        length,
+        category_id,
+        brand_id,
+        images,
+        address_id
+    } = req.body.data;
+
+    const user_id = req.user.id;
+
+    const transaction = await sequelize.transaction();
 
     try {
-        // Verificar se todos os campos obrigatórios foram fornecidos
-        if (!name || !ref || !description || !situation || !price || !category_id || !brand_id || !user_id) {
-            return res.status(400).json({ message: 'Missing required fields' });
+        if (!name || !description || !situation || !category_id || !brand_id || !user_id ||!address_id) {
+            return res.status(200).json({ success: false, code: 400, message: "Produto não pode adicionado." });
         }
 
-        // Criar o novo produto
         const newProduct = await Product.create({
             name,
-            ref,
+            ref: Utils.makeid(7),
             description,
             situation,
-            price,
-            other_price: other_price || 0,
-            status,
+            status: "E",
             tags,
             weight,
             width,
@@ -67,35 +84,45 @@ router.post('/create', validateOrigin, async (req, res) => {
             length,
             category_id,
             brand_id,
-            user_id
-        });
+            user_id,
+            address_id,
+            price: 0,
+            other_price: 0,
+            reason_failure: "",
+        }, { transaction });
 
-        return res.status(201).json(newProduct);
+        if (images && images.length > 0) {
+            const imageRecords = images.map(image => ({
+                path: image.path,
+                extention: image.extention,
+                product_id: newProduct.id
+            }));
+            await ProductImage.bulkCreate(imageRecords, { transaction });
+        }
+
+        await transaction.commit();
+
+        return res.status(200).json({ success: true, code: 200, message: "Produto salvo." });
     } catch (error) {
         console.error(error);
+        await transaction.rollback();
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
 
-router.put('/update/:id', validateOrigin, async (req, res) => {
-    const { id } = req.params;
-    const { name, ref, description, situation, price, other_price, status, tags, weight, width, height, length, category_id, brand_id, user_id } = req.body;
+router.put('/update', validateToken, async (req, res) => {
+    const { id, name, description, situation, tags, weight, width, height, length, category_id, brand_id, address_id, images } = req.body.data;
 
     try {
         const product = await Product.findByPk(id);
 
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return res.status(200).json({ success: false, code: 400, message: "Produto não pode atualizado." });
         }
 
-        // Atualizar os campos do produto
         product.name = name || product.name;
-        product.ref = ref || product.ref;
         product.description = description || product.description;
         product.situation = situation || product.situation;
-        product.price = price || product.price;
-        product.other_price = other_price || product.other_price;
-        product.status = status || product.status;
         product.tags = tags || product.tags;
         product.weight = weight || product.weight;
         product.width = width || product.width;
@@ -103,12 +130,11 @@ router.put('/update/:id', validateOrigin, async (req, res) => {
         product.length = length || product.length;
         product.category_id = category_id || product.category_id;
         product.brand_id = brand_id || product.brand_id;
-        product.user_id = user_id || product.user_id;
+        product.address_id = address_id || product.address_id;
 
-        // Salvar as mudanças
         await product.save();
 
-        return res.status(200).json(product);
+        return res.status(200).json({ success: true, code: 200, message: "Produto salvo." });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -260,9 +286,9 @@ router.get('/my-products', validateToken, async (req, res) => {
 
 router.delete('/delete-my-products/:id', validateToken, async (req, res) => {
     try {
-        const id = req.params.id; 
-        const user_id = req.user.id; 
-        
+        const id = req.params.id;
+        const user_id = req.user.id;
+
         const product = await Product.findOne({ where: { id, user_id } });
         if (!product) {
             return res.status(200).json({ success: false, code: 404, message: "Produto não encontrado." });
@@ -279,5 +305,40 @@ router.delete('/delete-my-products/:id', validateToken, async (req, res) => {
         return res.status(500).json({ success: false, code: 500, message: "Erro ao excluir o produto.", data: error.message });
     }
 });
+
+router.post('/specific-product/add', validateToken, async (req, res) => {
+    const { description, address_id } = req.body.data;
+    const user_id = req.user.id;
+
+    try {
+        if (!description || !address_id || !user_id) {
+            return res.status(400).json({
+                success: false,
+                code: 400,
+                message: "Campos obrigatórios não foram enviados."
+            });
+        }
+
+        const specificProduct = await SpecificProduct.create({
+            description,
+            address_id,
+            user_id
+        });
+
+        return res.status(201).json({
+            success: true,
+            code: 201,
+            message: "Produto específico adicionado, entraremos em contato em breve.",
+            data: specificProduct
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            message: "Erro ao adicionar o produto específico.",
+            data: error.message
+        });
+    }
+})
 
 module.exports = router;

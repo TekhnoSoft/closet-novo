@@ -4,6 +4,7 @@ import { AccountModal, Button, ButtonGroup, Checkbox, Container, FragmentView, I
 import Utils from '../../Utils';
 import { MainContext } from '../../helpers/MainContext';
 import Api from '../../Api';
+import Environment from '../../Environment';
 
 const TabContent = ({ tab }) => {
 
@@ -24,7 +25,9 @@ const TabContent = ({ tab }) => {
         length: '',
         category_id: '',
         brand_id: '',
-        address_id: '',
+        address_id: -1,
+        status: '',
+        reason_failure: '',
         images: [],
     }
 
@@ -32,7 +35,7 @@ const TabContent = ({ tab }) => {
         description: '',
         address_id: '',
     }
-
+    
     const [formDataProduct, setFormDataProduct] = useState(emptyFormDataProduct);
     const [formDataSpecificProduct, setFormDataSpecificProduct] = useState(emptyFormDataSpecificProduct);
     const [showModalProduct, setShowModalProduct] = useState(false);
@@ -40,6 +43,7 @@ const TabContent = ({ tab }) => {
     const [products, setProducts] = useState([]);
     const [showProductDeleteModal, setShowProductDeleteModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [disableButtonAddProduct, setDisableButtonAddProduct] = useState(false);
 
     const emptyFormDataAddress = {
         name: '',
@@ -62,6 +66,7 @@ const TabContent = ({ tab }) => {
     const [checkedProductTerms, setCheckedProductTerms] = useState(true);
 
     const [productTypeIndex, setProductTypeIndex] = useState(0);
+
     const [productType, setProductType] = useState([
         { index: 0, label: "Específico" },
         { index: 1, label: "Não Específico" },
@@ -339,20 +344,38 @@ const TabContent = ({ tab }) => {
     }
 
     const handleRegisterProductOk = async () => {
+
+        setDisableButtonAddProduct(true);
+
+        if (!checkedProductTerms) {
+            Utils.toast({ type: "error", text: "Você precisa concordar com os termos de veracidade do produto." })
+            return;
+        }
+
         switch (productTypeIndex) {
             case 0:
-                if (Utils.validateFormDataProduct({ data: formDataProduct })) {
+                if (Utils.validateFormDataProduct({ data: formDataProduct, mode: productModalMode })) {
                     let token = Utils.getClientToken();
                     switch (productModalMode) {
                         case "CREATE":
+                            let images_objects = [];
+                            for (const image of formDataProduct?.images || []) {
+                                try {
+                                    const data = await Api.user.uploadFile({ file: image.file, token: token });
+                                    images_objects.push({
+                                        temporaly_id: image.temporaly_id,
+                                        path: `${Environment.API_IMAGES}/files/${data?.data?.file?.id}`,
+                                        extention: Utils.getExtension(image.file.name),
+                                    });
+                                } catch (err) {
+                                    console.log(err);
+                                }
+                            }
+                            formDataProduct["images"] = images_objects;
                             await Api.user.addProduct({ forceToken: token, data: formDataProduct }).then(async data => {
                                 Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
                                 if (data?.data?.success) {
-                                    setShowModalProduct(false);
-                                    setFormDataProduct(emptyFormDataProduct);
-                                    loadMyProducts();
-                                    setProductModalMode("");
-                                    onCloseModalProduct();
+                                    resetAllModalProduct();
                                 }
                             })
                             break;
@@ -361,16 +384,13 @@ const TabContent = ({ tab }) => {
                             await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(async data => {
                                 Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
                                 if (data?.data?.success) {
-                                    setShowModalProduct(false);
-                                    setFormDataProduct(emptyFormDataProduct);
-                                    loadMyProducts();
-                                    setProductModalMode("");
-                                    setSelectedProduct(null);
-                                    onCloseModalProduct();
+                                    resetAllModalProduct();
                                 }
                             })
                             break;
                     }
+                }else{
+                    setDisableButtonAddProduct(false);
                 }
                 break;
             case 1:
@@ -379,18 +399,23 @@ const TabContent = ({ tab }) => {
                     await Api.user.addSpecificProduct({ forceToken: token, data: formDataSpecificProduct }).then(async data => {
                         Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
                         if (data?.data?.success) {
-                            setShowModalProduct(false);
-                            setFormDataSpecificProduct(emptyFormDataSpecificProduct);
-                            setFormDataProduct(emptyFormDataProduct);
-                            loadMyProducts();
-                            setProductModalMode("");
-                            setSelectedProduct(null);
-                            onCloseModalProduct();
+                            resetAllModalProduct();
                         }
                     })
+                }else{
+                    setDisableButtonAddProduct(false);
                 }
                 break;
         }
+    }
+
+    const resetAllModalProduct = () => {
+        setShowModalProduct(false);
+        loadMyProducts();
+        setProductModalMode("");
+        setSelectedProduct(null);
+        onCloseModalProduct();
+        setDisableButtonAddProduct(false);
     }
 
     const handleEditProductModalShow = (product) => {
@@ -419,6 +444,7 @@ const TabContent = ({ tab }) => {
     const handleAddImage = (file) => {
         if (file) {
             const newImage = {
+                temporaly_id: Utils.makeid(),
                 path: URL.createObjectURL(file),
                 file,
             };
@@ -588,6 +614,16 @@ const TabContent = ({ tab }) => {
 
                             <div style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: '500px' }}>
 
+                                {selectedProduct && selectedProduct?.status == "R" && productModalMode == "UPDATE" ? (
+                                    <>
+                                        <div className='shadow' style={{ background: '#feeff0', padding: '8px', display: 'flex', alignItems: 'center', borderRadius: '4px', color: '#89161b' }}>
+                                            <ion-icon name="information-circle-outline"></ion-icon>&nbsp;
+                                            <p style={{ marginBottom: '10px', marginTop: '10px' }}>{selectedProduct?.reason_failure}</p>
+                                        </div>
+                                        <SpaceBox space={8} />
+                                    </>
+                                ) : (null)}
+
                                 {productModalMode == "CREATE" ? (
                                     <ButtonGroup activeIndex={productTypeIndex} onChange={onChangeProductType} items={productType} />
                                 ) : (null)}
@@ -662,6 +698,7 @@ const TabContent = ({ tab }) => {
                                         <SpaceBox space={1.5} />
 
                                         <Select label={"Situação"} hideInputBoxMargin value={formDataProduct.situation} setValue={(value) => setFormDataProduct({ ...formDataProduct, situation: value })}>
+                                            <Option value={""}>(Selecione)</Option>
                                             <Option value={"N"}>Novo</Option>
                                             <Option value={"U"}>Usado</Option>
                                         </Select>
@@ -732,7 +769,7 @@ const TabContent = ({ tab }) => {
                                         />
 
                                         <Select hideInputBoxMargin label={"Endereço de retirada"} value={formDataProduct.address_id} setValue={(value) => setFormDataProduct({ ...formDataProduct, address_id: value })}>
-                                            <Option value={null}>(Selecione)</Option>
+                                            <Option value={-1}>(Selecione)</Option>
                                             <Option value={0}>Entrega no Closet Novo</Option>
                                             {addresses?.map(address => (
                                                 <Option value={address.id}>{address?.name}, {address?.number}{address?.complement} {address?.neighborhood}, {address?.street}</Option>
@@ -752,7 +789,7 @@ const TabContent = ({ tab }) => {
                                         />
 
                                         <Select hideInputBoxMargin label={"Endereço de retirada"} value={formDataSpecificProduct.address_id} setValue={(value) => setFormDataSpecificProduct({ ...formDataSpecificProduct, address_id: value })}>
-                                            <Option value={null}>(Selecione)</Option>
+                                            <Option value={-1}>(Selecione)</Option>
                                             <Option value={0}>Entrega no Closet Novo</Option>
                                             {addresses?.map(address => (
                                                 <Option value={address.id}>{address?.name}, {address?.number}{address?.complement} {address?.neighborhood}, {address?.street}</Option>
@@ -778,7 +815,7 @@ const TabContent = ({ tab }) => {
                             <SpaceBox space={20} />
                             <div className="accont-button-group" style={{ justifyContent: !Utils?.mobileCheck() ? 'end' : undefined }}>
                                 <Button onClick={handleRegisterProductCancel} style={{ background: "#f5f5f5", color: "#5e8975" }} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Cancelar&nbsp;&nbsp;&nbsp;</Button>&nbsp;
-                                <Button onClick={handleRegisterProductOk} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Salvar&nbsp;&nbsp;&nbsp;</Button>
+                                <Button disabled={disableButtonAddProduct} onClick={handleRegisterProductOk} className="submit-button accont-button">&nbsp;&nbsp;&nbsp;Salvar&nbsp;&nbsp;&nbsp;</Button>
                             </div>
                         </div>
                     </Modal >
