@@ -133,6 +133,10 @@ router.put('/update', validateToken, async (req, res) => {
         product.brand_id = brand_id || product.brand_id;
         product.address_id = address_id || product.address_id;
 
+        if(product?.status == "R"){
+            product.status = "E";
+        }
+
         if (images && images.length > 0) {
             const existingImages = await ProductImage.findAll({
                 where: { product_id: product.id },

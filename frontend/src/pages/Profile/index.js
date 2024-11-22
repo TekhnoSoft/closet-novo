@@ -356,9 +356,9 @@ const TabContent = ({ tab }) => {
             case 0:
                 if (Utils.validateFormDataProduct({ data: formDataProduct, mode: productModalMode })) {
                     let token = Utils.getClientToken();
+                    let images_objects = [];
                     switch (productModalMode) {
                         case "CREATE":
-                            let images_objects = [];
                             for (const image of formDataProduct?.images || []) {
                                 try {
                                     const data = await Api.user.uploadFile({ file: image.file, token: token });
@@ -381,28 +381,32 @@ const TabContent = ({ tab }) => {
                             break;
                         case "UPDATE":
                             formDataProduct["id"] = selectedProduct.id;
-                            let images_objects_updates = [];
+
                             for (const image of formDataProduct?.images || []) {
                                 if (image.temporaly_id) {
+                                    // Faz upload para imagens novas
                                     try {
-                                        const data = await Api.user.uploadFile({ file: image.file, token: token });
-                                        images_objects_updates.push({
+                                        const data = await Api.user.uploadFile({ file: image.file, token });
+                                        images_objects.push({
                                             temporaly_id: image.temporaly_id,
                                             path: `${Environment.API_IMAGES}/files/${data?.data?.file?.id}`,
                                             extention: Utils.getExtension(image.file.name),
                                         });
                                     } catch (err) {
-                                        console.log(err);
+                                        console.error("Erro ao fazer upload da imagem: ", err);
                                     }
+                                } else if (image.id) {
+                                    // Mantém imagens existentes
+                                    images_objects.push(image);
                                 }
                             }
-                            formDataProduct.images.concat(images_objects_updates);
-                            await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(async data => {
-                                Utils.toast({ type: data?.data?.success == true ? "success" : "error", text: data?.data?.message });
-                                if (data?.data?.success) {
-                                    resetAllModalProduct();
-                                }
-                            })
+
+                            formDataProduct["images"] = images_objects;
+
+                            await Api.user.updateProduct({ forceToken: token, data: formDataProduct }).then(data => {
+                                Utils.toast({ type: data?.data?.success ? "success" : "error", text: data?.data?.message });
+                                if (data?.data?.success) resetAllModalProduct();
+                            });
                             break;
                     }
                 } else {
