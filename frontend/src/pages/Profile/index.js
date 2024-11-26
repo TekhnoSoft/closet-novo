@@ -348,7 +348,8 @@ const TabContent = ({ tab }) => {
         setDisableButtonAddProduct(true);
 
         if (!checkedProductTerms) {
-            Utils.toast({ type: "error", text: "Você precisa concordar com os termos de veracidade do produto." })
+            Utils.toast({ type: "error", text: "Você precisa concordar com os termos de veracidade do produto." });
+            setDisableButtonAddProduct(false);
             return;
         }
 
@@ -484,12 +485,14 @@ const TabContent = ({ tab }) => {
         setFormDataProduct(emptyFormDataProduct);
         setFormDataSpecificProduct(emptyFormDataSpecificProduct);
         setProductTypeIndex(0);
+        setDisableButtonAddProduct(false);
     }
 
     const onChangeProductType = (type) => {
         setFormDataProduct(emptyFormDataProduct);
         setFormDataSpecificProduct(emptyFormDataSpecificProduct);
         setProductTypeIndex(type.index);
+        setDisableButtonAddProduct(false);
     }
 
     switch (tab) {
